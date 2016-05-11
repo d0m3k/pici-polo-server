@@ -11,37 +11,66 @@ import java.net.Socket;
  */
 public class SingleRequest extends Thread {
 
-    Socket s;
-    PrintWriter pW;
-    BufferedReader bR;
+    private Object monitor;
+    private Socket s;
+    private PrintWriter pW;
+    private BufferedReader bR;
+    private boolean flag;
 
     public SingleRequest(){
+        monitor = new Object();
         this.s = null;
         pW = null;
         bR = null;
+        flag = false;
     }
 
     public SingleRequest(Socket s) throws IOException {
+        monitor = new Object();
         this.s = s;
         pW = new PrintWriter(s.getOutputStream(), true);
         bR = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        flag = true;
     }
 
     public void setRequest(Socket s) throws IOException {
         this.s = s;
         pW = new PrintWriter(s.getOutputStream(), true);
         bR = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        flag = true;
     }
 
     public SingleRequest resetRequest() throws IOException {
         if (bR!=null) bR.close();
         if (pW!=null) pW.close();
         if (s!=null) s.close();
+        flag = false;
         return this;
     }
 
     @Override
     public void run() {
+        while(true){
+            while(flag==false){
+                synchronized(monitor){
+                    try {
+                        monitor.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            process();
+        }
+    }
+
+    public void wake(){
+        synchronized(monitor){
+            monitor.notifyAll();
+        }
+    }
+
+    private void process(){
         String line = null;
         try {
             while ((line = bR.readLine()) != null) {

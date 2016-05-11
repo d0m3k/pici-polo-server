@@ -21,6 +21,11 @@ public class Connector {
         monitor = new Object();
         mainThread = Thread.currentThread();
         readyPool = new LinkedList<>();
+        for (int i =0;i<5;i++){
+            SingleRequest a = new SingleRequest();
+            readyPool.push(a);
+            a.start();
+        }
         activePool = new LinkedList<>();
         ServerSocket sS = null;
         try {
@@ -33,13 +38,15 @@ public class Connector {
                     SingleRequest sR = null;
                     while ((sR=getFreeRequest())==null){
                         try {
-                            monitor.wait(5000);
+                            synchronized (monitor) {
+                                monitor.wait(5000);
+                            }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                     sR.setRequest(s);
-                    sR.start();
+                    sR.wake();
                 }catch(IOException e){
                     e.printStackTrace();
                 }
