@@ -47,12 +47,17 @@ public class SingleRequest extends Thread {
             while ((line = bR.readLine()) != null) {
                 if (line.startsWith("user")){
 
-                }else if(line.startsWith("user")){
+                }else if(line.startsWith("create")){
 
-                }else if(line.startsWith("user")){
+                }else if(line.startsWith("move")){
+
+                }else if(line.startsWith("waiting")){
+
+                }else if(line.startsWith("state")){
 
                 }else{
                     throw new IOException("Wrong user input");
+
                 }
             }
         }catch(IOException e){
@@ -65,5 +70,25 @@ public class SingleRequest extends Thread {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void processUser(String line){
+
+    }
+
+    private void processCreate(String line){
+
+    }
+
+    private void processMove(String line){
+
+    }
+
+    private void processWaiting(String line){
+
+    }
+
+    private void processState(String line){
+
     }
 }

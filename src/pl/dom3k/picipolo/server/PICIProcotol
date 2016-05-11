@@ -14,7 +14,6 @@ user giving input:
 <socket>
 client: "move:<name>:<id>;<game-name>:<number>:<card-number>"
 server: "results:<game-name>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
-user asking for others turn...
 </socket>
 
 user asking for others turn:
@@ -29,3 +28,4 @@ user asking for current state:
 <socket>
 client: "state:<name>:<id>:<game-name>"
 server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
+</socket>
