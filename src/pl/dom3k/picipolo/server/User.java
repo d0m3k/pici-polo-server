@@ -1,6 +1,7 @@
 package pl.dom3k.picipolo.server;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -22,16 +23,23 @@ public class User {
 
     private String name;
     private String id;
-    private List<Game> activeGames;
+    private HashSet<Game> activeGames;
 
     public User(String name, String id) {
         this.name = name;
         this.id = id;
-        activeGames = new ArrayList<>();
+        activeGames = new HashSet<>();
     }
 
     public boolean compareID(String id){
         return this.id.equals(id);
     }
 
+    public void addGame(Game game){
+        activeGames.add(game);
+    }
+
+    public void removeGame(Game game){
+
+    }
 }
