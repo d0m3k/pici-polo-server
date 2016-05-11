@@ -33,7 +33,7 @@ public class Connector {
                     SingleRequest sR = null;
                     while ((sR=getFreeRequest())==null){
                         try {
-                            monitor.wait();
+                            monitor.wait(5000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
