@@ -54,7 +54,7 @@ public class SingleRequest extends Thread {
             while(flag==false){
                 synchronized(monitor){
                     try {
-                        monitor.wait();
+                        monitor.wait(5000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -74,6 +74,11 @@ public class SingleRequest extends Thread {
         String line = null;
         try {
             while ((line = bR.readLine()) != null) {
+                String[] sublines = line.split(";");
+                String[][] tab = new String[sublines.length][];
+                for(int i = 0;i<sublines.length;i++){
+                    tab[i]=sublines[i].split(":");
+                }
                 if (line.startsWith("user")){
 
                 }else if(line.startsWith("create")){
@@ -91,14 +96,9 @@ public class SingleRequest extends Thread {
             }
         }catch(IOException e){
             e.printStackTrace();
-            try{
-                if (bR!=null) bR.close();
-                if (pW!=null) pW.close();
-                if (s!=null) s.close();
-            }catch(IOException f){
-                e.printStackTrace();
-            }
         }
+        Connector.addFreeRequest(this);
+        Connector.notifyMonitor();
     }
 
     private void processUser(String[] line) throws Exception{
