@@ -35,11 +35,15 @@ public class User {
         return this.id.equals(id);
     }
 
-    public void addGame(Game game){
-        activeGames.add(game);
+    public boolean addGame(Game game){
+        return activeGames.add(game);
     }
 
-    public void removeGame(Game game){
+    public boolean removeGame(Game game){
+        return activeGames.remove(game);
+    }
 
+    public boolean compareName(String name){
+        return this.name.equals(name);
     }
 }
