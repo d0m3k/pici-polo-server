@@ -1,6 +1,7 @@
 package pl.dom3k.picipolo.server;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Created by Januszek on 2016-05-11.
@@ -9,6 +10,7 @@ public class Storage {
     private static final Object gamesMonitor = new Object();
     private static final Object usersMonitor = new Object();
     private static HashMap<String,Game> games = new HashMap<>();
+    private static LinkedList<Game> publicGames = new LinkedList<>();
     private static HashMap<String,User> users = new HashMap<>();
 
     public static boolean addUser(String name,String ID)throws Exception{
@@ -46,6 +48,7 @@ public class Storage {
                     return false;
                 }
                 game = games.put(name, new Game(name, user, priv));
+                if (!priv) publicGames.add(game);
                 user.addGame(game);
             }
         }
@@ -129,5 +132,15 @@ public class Storage {
                 }
             }
         }
+    }
+
+    public static String listPublic()throws Exception{
+        StringBuilder sB = new StringBuilder();
+        synchronized (gamesMonitor){
+            for (Game g:publicGames){
+                sB.append(g.getName());
+            }
+        }
+        return sB.toString();
     }
 }

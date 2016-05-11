@@ -33,3 +33,9 @@ user wanting to join game:
 client: "join:<user-name>:<id>:<game-name>"
 server: "full" || "nonexisting" || "ok"
 </socket>
+
+user wanting public games:
+<socket>
+client: "public:<user-name>:<id>""
+server: "public:<game1-name>:<game2-name>:..."
+</socket>

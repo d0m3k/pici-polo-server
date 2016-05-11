@@ -20,6 +20,10 @@ public class Game {
         return name.hashCode();
     }
 
+    public String getName() {
+        return name;
+    }
+
     String name;
     User[] players;
     long[] points;
