@@ -113,4 +113,21 @@ public class Storage {
         }
         return change;
     }
+
+    public static String addPlayer(String gameName,String userName)throws Exception{
+        Game game = null;
+        synchronized (gamesMonitor){
+            synchronized (usersMonitor){
+                if ((game = games.get(gameName)) != null) {
+                    if (game.addPlayer(users.get(userName))){
+                        return "ok";
+                    }else{
+                        return "full";
+                    }
+                }else{
+                    return "nonexisting";
+                }
+            }
+        }
+    }
 }

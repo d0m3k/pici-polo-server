@@ -89,6 +89,8 @@ public class SingleRequest extends Thread {
                     processWaiting(tab);
                 }else if(line.startsWith("state")){
                     processState(tab);
+                }else if(line.startsWith("join")){
+                    processJoin(tab);
                 }else{
                     throw new IOException("Wrong user input");
                 }
@@ -199,6 +201,22 @@ public class SingleRequest extends Thread {
             if (Storage.checkUser(playerName,ID)) tab = Storage.getResult(gameName,playerName);
             if(tab!=null){
                 output="state:"+tab[0]+":"+tab[1]+":"+tab[2]+":"+tab[3]+":"+tab[4]+":"+tab[5];
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            pW.println(output);
+        }
+    }
+
+    private void processJoin(String[][] line){
+        String output = "error";
+        try {
+            String gameName = line[0][3];
+            String userName = line[0][1];
+            String ID = line[0][2];
+            if (Storage.checkUser(userName, ID)) {
+                output = Storage.addPlayer(gameName, userName);
             }
         }catch(Exception e){
             e.printStackTrace();

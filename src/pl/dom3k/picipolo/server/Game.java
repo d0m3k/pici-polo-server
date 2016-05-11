@@ -114,4 +114,12 @@ public class Game {
     public Change getLastChange()throws Exception{
         return lastChange;
     }
+
+    public boolean addPlayer(User user){
+        if (players[1]==null){
+            players[1]=user;
+            turn = 0;
+        }
+        return false;
+    }
 }

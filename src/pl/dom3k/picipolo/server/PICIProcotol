@@ -22,10 +22,14 @@ client: "waiting:<user-name>:<id>:<game-name>"
 server: "idle" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
-
-
 user asking for current state:
 <socket>
 client: "state:<user-name>:<id>:<game-name>"
 server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
+</socket>
+
+user wanting to join game:
+<socket>
+client: "join:<user-name>:<id>:<game-name>"
+server: "full" || "nonexisting" || "ok"
 </socket>
