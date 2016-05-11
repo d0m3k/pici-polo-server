@@ -1,3 +1,5 @@
+EVERY RESPONSE FROM SERVER CAN BE "error"! It's caused by wrong id or input (shouldn't happen in application) or unexpected exception on server.
+
 user login:
 <socket>
 client: "user:<user-name>:<id>"
