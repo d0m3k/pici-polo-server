@@ -1,24 +1,24 @@
 user login:
 <socket>
-client: "user:<name>:<id>"
+client: "user:<user-name>:<id>"
 server: "created||ok||taken"
 </socket>
 
 user creating public game:
 <socket>
-client: "create:<name>:<id>;public/private:<game-name>"
-server: "ok||taken"
+client: "create:<user-name>:<id>;public/private:<game-name>"
+server: "created||taken"
 </socket>
 
 user giving input:
 <socket>
-client: "move:<name>:<id>;<game-name>:<number>:<card-number>"
-server: "results:<game-name>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
+client: "move:<user-name>:<id>:<game-name>:<number>:<card-number>"
+server: "results:<game-name>:<sign>:<diff>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
 user asking for others turn:
 <socket>
-client: "waiting:<name>:<id>:<game-name>"
+client: "waiting:<user-name>:<id>:<game-name>"
 server: "idle" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
@@ -26,6 +26,6 @@ server: "idle" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-t
 
 user asking for current state:
 <socket>
-client: "state:<name>:<id>:<game-name>"
+client: "state:<user-name>:<id>:<game-name>"
 server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>

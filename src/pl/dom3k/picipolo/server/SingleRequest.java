@@ -72,23 +72,106 @@ public class SingleRequest extends Thread {
         }
     }
 
-    private void processUser(String line){
+    private void processUser(String[] line) throws Exception{
+        /*
+        client: "user:<user-name>:<id>"
+        server: "created||ok||taken"
+        */
+        if(line.length != 3)
+            throw new Exception("incomplete request");
+
+        String userName = line[1];
+        String id = line[2];
+
+        String toClientRequest;
+        //if(!userNameIsTaken) toClientRequest = "created";
+        //else if(!isUsed) toClientRequest = "ok";
+        //else toClientRequest = "taken";
+
+        //send to client
 
     }
 
-    private void processCreate(String line){
+    private void processCreate(String[] line) throws Exception{
+        /*
+        client: "create:<user-name>:<id>;public/private:<game-name>"
+        server: "ok||taken"
+        */
+        if(line.length != 5)
+            throw new Exception("incomplete request");
+
+        String userName = line[1];
+        String id = line[2];
+        String visibility = line[3];
+        String gameName = line[4];
+
+        String toClientRequest;
+        //if(!gameNameIsTaken) toClientRequest = "created";
+        //else toClientRequest = "taken";
+
+        //send to client
 
     }
 
-    private void processMove(String line){
+    private void processMove(String[] line) throws Exception{
+        /*
+        client: "move:<user-name>:<id>:<game-name>:<number>:<card-number>"
+        server: "results:<game-name>:<sign>:<diff>:<whos-turn-name>:
+            <first-name>:<second-name>:<first-result>:<second-result>"
+        */
+        if(line.length != 6)
+            throw new Exception("incomplete request");
+
+        String userName = line[1];
+        String id = line[2];
+        String gameName = line[3];
+        String number = line[4];
+        String cardNumber = line[5];
+
+        String toClientRequest;
+
+        //send to client
 
     }
 
-    private void processWaiting(String line){
+    private void processWaiting(String[] line) throws Exception{
+        /*
+        client: "waiting:<user-name>:<id>:<game-name>"
+        server: "idle" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>:<whos-turn-name>:
+            <first-name>:<second-name>:<first-result>:<second-result>"
+        */
+
+        if(line.length != 4)
+            throw new Exception("incomplete request");
+
+        String userName = line[1];
+        String id = line[2];
+        String gameName = line[3];
+
+        String toClientRequest;
+        //if(isIdle) toClientRequest = "idle";
+        //else
+
+        //send to client
+
 
     }
 
-    private void processState(String line){
+    private void processState(String[] line) throws Exception{
+        /*
+        client: "state:<user-name>:<id>:<game-name>"
+        server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
+        */
+
+        if(line.length != 4)
+            throw new Exception("incomplete request");
+
+        String userName = line[1];
+        String id = line[2];
+        String gameName = line[3];
+
+        String toClientRequest;
+        //send to client
 
     }
 }
