@@ -1,0 +1,13 @@
+user login:
+<socket>
+client: "user: <name> <id>"
+server: "created" || "ok" || "wrong id"
+</socket>
+
+user creating game:
+
+
+user during game:
+
+
+user asking for results:

@@ -6,16 +6,13 @@ import java.util.List;
 /**
  * Created by Januszek on 2016-05-10.
  */
-public class Player {
+public class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Player player = (Player) o;
-
+        User player = (User) o;
         return name.equals(player.name);
-
     }
 
     @Override
@@ -25,14 +22,16 @@ public class Player {
 
     private String name;
     private String id;
-    private List<Game> games;
+    private List<Game> activeGames;
 
-    public Player(String name, String id) {
+    public User(String name, String id) {
         this.name = name;
         this.id = id;
-        games = new ArrayList<>();
+        activeGames = new ArrayList<>();
     }
 
-
+    public boolean compareID(String id){
+        return this.id.equals(id);
+    }
 
 }
