@@ -38,6 +38,7 @@ public class Connector {
                             e.printStackTrace();
                         }
                     }
+                    sR.setRequest(s);
                     sR.start();
                 }catch(IOException e){
                     e.printStackTrace();
@@ -73,7 +74,7 @@ public class Connector {
 
     public static void notifyMonitor(){
         synchronized (monitor){
-            monitor.notify();
+            monitor.notifyAll();
         }
     }
 }
