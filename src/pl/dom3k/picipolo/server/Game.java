@@ -23,6 +23,7 @@ public class Game {
     String name;
     User[] players;
     long[] points;
+    Change lastChange;
     short turn;
     boolean priv;
 
@@ -30,6 +31,7 @@ public class Game {
         this.name = name;
         players = new User[2];
         points = new long[2];
+        lastChange = null;
         players[0]=first;
         points[0]=0;
         points[1]=0;
@@ -41,6 +43,7 @@ public class Game {
         this.name = name;
         players = new User[2];
         points = new long[2];
+        lastChange = null;
         players[0]=first;
         players[1]=second;
         points[0]=0;
@@ -49,7 +52,7 @@ public class Game {
         turn = 0;
     }
 
-    public int getUserIndex(String name){
+    public int getUserIndex(String name)throws Exception{
         int result = -1;
         for (int i=0;i<players.length;i++){
             if (players[i].compareName(name)) result = i;
@@ -57,23 +60,27 @@ public class Game {
         return result;
     }
 
-    public Change makeMove(int playerIndex ,int number,int cardNumber){
+    public Change makeMove(int playerIndex ,int number,int cardNumber)throws Exception{
         if (playerIndex!=turn) return null;
         Change change = null;
         int zero = new Random().nextInt()%100;
         int one = new Random().nextInt()%100;
         long old = points[playerIndex];
         String sign = null;
-        if (number<1){
+        String otherSign = null;
+        if (cardNumber<1){
             sign = useSign(playerIndex,number,zero);
+            otherSign = useSign(playerIndex,number,one);
         }else{
             sign = useSign(playerIndex,number,one);
+            otherSign = useSign(playerIndex,number,zero);
         }
-        change = new Change(points[playerIndex],points[playerIndex]-old,sign);
+        change = new Change(points[playerIndex],points[playerIndex]-old,sign,players[playerIndex].getName(),number,otherSign);
+        lastChange=change;
         return change;
     }
 
-    private String useSign(int playerIndex,int number, int signNumber){
+    private String useSign(int playerIndex,int number, int signNumber)throws Exception{
         String sign = null;
         if (signNumber<35){
             sign = "+";
@@ -92,5 +99,19 @@ public class Game {
             points[playerIndex]=number;
         }
         return sign;
+    }
+
+    public String[] setResultInTab(String[] tab)throws Exception{
+        tab[0]=name;
+        if (turn>=0)tab[1]=players[turn].getName();else tab[1]="";
+        tab[2]=players[0].getName();
+        if (players[1]!=null)tab[3]=players[1].getName(); else tab[3]="";
+        tab[4]=Long.toString(points[0]);
+        tab[5]=Long.toString(points[1]);
+        return tab;
+    }
+
+    public Change getLastChange()throws Exception{
+        return lastChange;
     }
 }

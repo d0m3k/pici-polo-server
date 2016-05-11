@@ -80,127 +80,130 @@ public class SingleRequest extends Thread {
                     tab[i]=sublines[i].split(":");
                 }
                 if (line.startsWith("user")){
-
+                    processUser(tab);
                 }else if(line.startsWith("create")){
-
+                    processCreate(tab);
                 }else if(line.startsWith("move")){
-
+                    processMove(tab);
                 }else if(line.startsWith("waiting")){
-
+                    processWaiting(tab);
                 }else if(line.startsWith("state")){
-
+                    processState(tab);
                 }else{
                     throw new IOException("Wrong user input");
-
                 }
             }
         }catch(IOException e){
             e.printStackTrace();
+            pW.println("error");
         }
         Connector.addFreeRequest(this);
         Connector.notifyMonitor();
     }
 
-    private void processUser(String[] line) throws Exception{
-        /*
-        client: "user:<user-name>:<id>"
-        server: "created||ok||taken"
-        */
-        if(line.length != 3)
-            throw new Exception("incomplete request");
-
-        String userName = line[1];
-        String id = line[2];
-
-        String toClientRequest;
-        //if(!userNameIsTaken) toClientRequest = "created";
-        //else if(!isUsed) toClientRequest = "ok";
-        //else toClientRequest = "taken";
-
-        //send to client
-
+    private void processUser(String[][] line){
+        String output = "error";
+        try {
+            String name = line[0][1];
+            String ID = line[0][2];
+            if (Storage.addUser(name, ID)) {
+                output = "created";
+            } else {
+                if (Storage.checkUser(name, ID)) {
+                    output = "ok";
+                } else {
+                    output = "taken";
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            pW.println(output);
+        }
     }
 
-    private void processCreate(String[] line) throws Exception{
-        /*
-        client: "create:<user-name>:<id>;public/private:<game-name>"
-        server: "ok||taken"
-        */
-        if(line.length != 5)
-            throw new Exception("incomplete request");
-
-        String userName = line[1];
-        String id = line[2];
-        String visibility = line[3];
-        String gameName = line[4];
-
-        String toClientRequest;
-        //if(!gameNameIsTaken) toClientRequest = "created";
-        //else toClientRequest = "taken";
-
-        //send to client
-
+    private void processCreate(String[][] line){
+        String output = "error";
+        try {
+            String gameName = line[1][1];
+            String userName = line[0][1];
+            String ID = line[0][2];
+            String priv = line[1][0];
+            boolean ifPriv = false;
+            if (priv.equals("priv")) ifPriv = true;
+            if (Storage.checkUser(userName, ID)) {
+                if (Storage.addGame(gameName, userName, ifPriv)) {
+                    output = "created";
+                } else {
+                    output = "taken";
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            pW.println(output);
+        }
     }
 
-    private void processMove(String[] line) throws Exception{
-        /*
-        client: "move:<user-name>:<id>:<game-name>:<number>:<card-number>"
-        server: "results:<game-name>:<sign>:<diff>:<whos-turn-name>:
-            <first-name>:<second-name>:<first-result>:<second-result>"
-        */
-        if(line.length != 6)
-            throw new Exception("incomplete request");
-
-        String userName = line[1];
-        String id = line[2];
-        String gameName = line[3];
-        String number = line[4];
-        String cardNumber = line[5];
-
-        String toClientRequest;
-
-        //send to client
-
+    private void processMove(String[][] line){
+        String output = "error";
+        try{
+            String playerName=line[0][1];
+            String ID=line[0][2];
+            String gameName=line[0][3];
+            Change change = null;
+            int number=Integer.parseInt(line[0][4]);
+            int signNumber=Integer.parseInt(line[0][5]);
+            if (Storage.checkUser(playerName,ID)) change = Storage.makeMove(playerName,gameName,number,signNumber);
+            if (change!=null){
+                String[] tab = Storage.getResult(gameName,playerName);
+                if (tab!=null){
+                    output="results:"+gameName+":"+change.getSign()+":"+change.getDiff()+":"+tab[1]+":"+tab[2]+":"+tab[3]+":"+tab[4]+":"+tab[5];
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            pW.println(output);
+        }
     }
 
-    private void processWaiting(String[] line) throws Exception{
-        /*
-        client: "waiting:<user-name>:<id>:<game-name>"
-        server: "idle" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>:<whos-turn-name>:
-            <first-name>:<second-name>:<first-result>:<second-result>"
-        */
-
-        if(line.length != 4)
-            throw new Exception("incomplete request");
-
-        String userName = line[1];
-        String id = line[2];
-        String gameName = line[3];
-
-        String toClientRequest;
-        //if(isIdle) toClientRequest = "idle";
-        //else
-
-        //send to client
-
-
+    private void processWaiting(String[][] line){
+        String output = "error";
+        try{
+            String playerName=line[0][1];
+            String ID=line[0][2];
+            String gameName=line[0][3];
+            Change change = null;
+            if (Storage.checkUser(playerName,ID)) change = Storage.getLastChange(gameName,playerName);
+            if (change!=null){
+                String[] tab = Storage.getResult(gameName,playerName);
+                if (tab!=null){
+                    output="other:"+gameName+":"+change.getPlayerName()+":"+change.getResult()+":"+change.getSign()+":"+change.getDiff()+";"+tab[1]+":"+tab[2]+":"+tab[3]+":"+tab[4]+":"+tab[5];
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            pW.println(output);
+        }
     }
 
-    private void processState(String[] line) throws Exception{
-        /*
-        client: "state:<user-name>:<id>:<game-name>"
-        server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
-        */
-
-        if(line.length != 4)
-            throw new Exception("incomplete request");
-
-        String userName = line[1];
-        String id = line[2];
-        String gameName = line[3];
-
-        String toClientRequest;
-        //send to client
-
+    private void processState(String[][] line){
+        String output = "error";
+        try{
+            String playerName=line[0][1];
+            String ID=line[0][2];
+            String gameName=line[0][3];
+            String[] tab=null;
+            if (Storage.checkUser(playerName,ID)) tab = Storage.getResult(gameName,playerName);
+            if(tab!=null){
+                output="state:"+tab[0]+":"+tab[1]+":"+tab[2]+":"+tab[3]+":"+tab[4]+":"+tab[5];
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            pW.println(output);
+        }
     }
 }

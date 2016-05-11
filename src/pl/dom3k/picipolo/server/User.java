@@ -21,6 +21,10 @@ public class User {
         return name.hashCode();
     }
 
+    public String getName() {
+        return name;
+    }
+
     private String name;
     private String id;
     private HashSet<Game> activeGames;
@@ -31,19 +35,19 @@ public class User {
         activeGames = new HashSet<>();
     }
 
-    public boolean compareID(String id){
+    public boolean compareID(String id)throws Exception{
         return this.id.equals(id);
     }
 
-    public boolean addGame(Game game){
+    public boolean addGame(Game game)throws Exception{
         return activeGames.add(game);
     }
 
-    public boolean removeGame(Game game){
+    public boolean removeGame(Game game)throws Exception{
         return activeGames.remove(game);
     }
 
-    public boolean compareName(String name){
+    public boolean compareName(String name)throws Exception{
         return this.name.equals(name);
     }
 }

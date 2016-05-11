@@ -13,7 +13,7 @@ server: "created||taken"
 user giving input:
 <socket>
 client: "move:<user-name>:<id>:<game-name>:<number>:<card-number>"
-server: "results:<game-name>:<sign>:<diff>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
+server: "results:<game-name>:<sign>:<other-sign>:<diff>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
 user asking for others turn:
