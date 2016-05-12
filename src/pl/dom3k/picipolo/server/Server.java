@@ -5,6 +5,6 @@ package pl.dom3k.picipolo.server;
  */
 public class Server {
     public static void main(String[] args){
-
+        Connector.runServerSocket();
     }
 }
