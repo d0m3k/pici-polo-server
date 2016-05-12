@@ -2,49 +2,49 @@ EVERY RESPONSE FROM SERVER CAN BE "error"! It's caused by wrong id or input (sho
 
 user login:
 <socket>
-client: "user:<user-name>:<id>"
+client: "user:<user-name>:<id>:"
 server: "created||ok||taken"
 </socket>
 
 user creating game:
 <socket>
-client: "create:<user-name>:<id>;public/private:<game-name>"
+client: "create:<user-name>:<id>;public/private:<game-name>:"
 server: "create:<game-name>||taken"
 </socket>
 
 user giving input:
 <socket>
-client: "move:<user-name>:<id>:<game-name>:<number>:<card-number>"
+client: "move:<user-name>:<id>:<game-name>:<number>:<card-number>:"
 server: "results:<game-name>:<sign>:<other-sign>:<diff>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>" || "forbidden"
 </socket>
 
 user asking for others turn:
 <socket>
-client: "waiting:<user-name>:<id>:<game-name>"
+client: "waiting:<user-name>:<id>:<game-name>:"
 server: "idle" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
 user asking for current state:
 //empty fields for turn and second name if no players joined
 <socket>
-client: "state:<user-name>:<id>:<game-name>"
+client: "state:<user-name>:<id>:<game-name>:"
 server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
 user wanting to join game:
 <socket>
-client: "join:<user-name>:<id>:<game-name>"
+client: "join:<user-name>:<id>:<game-name>:"
 server: "full" || "nonexisting" || "ok"
 </socket>
 
 user wanting public games:
 <socket>
-client: "public:<user-name>:<id>""
+client: "public:<user-name>:<id>:"
 server: "public:<game1-name>:<game2-name>:..."
 </socket>
 
 user wanting list of his games:
 <socket>
-client: "games:<user-name>:<id>""
+client: "games:<user-name>:<id>:"
 server: "games:<game1-name>:<game2-name>:..."
 </socket>
