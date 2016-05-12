@@ -44,12 +44,12 @@ public class Storage {
         String newName = null;
         synchronized (gamesMonitor) {
             synchronized (usersMonitor) {
-                game = games.get(name);
+                if (name!=null) game = games.get(name);
                 user = users.get(userName);
                 if (game != null||user == null) {
                     return null;
                 }
-                if (name.equals("")){
+                if (name==null){
                     newName = getRandomName();
                     if (newName==null) return null;
                 }else{
@@ -167,15 +167,15 @@ public class Storage {
     }
 
     private static String getRandomName()throws Exception{
-        String name=null;
         boolean flag = true;
         synchronized (gamesMonitor){
+            String name=null;
             while(flag) {
                 int number = 20 + new Random().nextInt() % 10000;
                 name = "Burak" + number;
-                if (games.get("name")==null)flag = false;
+                if (games.get(name)==null)flag = false;
             }
+            return name;
         }
-        return name;
     }
 }

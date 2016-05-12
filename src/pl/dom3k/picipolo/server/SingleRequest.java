@@ -134,8 +134,6 @@ public class SingleRequest extends Thread {
             String gameName = null;
             if (line[1].length>1){
                 gameName = line[1][1];
-            }else{
-                gameName = "";
             }
             String userName = line[0][1];
             String ID = line[0][2];
