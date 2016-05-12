@@ -136,10 +136,11 @@ public class SingleRequest extends Thread {
             String ID = line[0][2];
             String priv = line[1][0];
             boolean ifPriv = false;
-            if (priv.equals("priv")) ifPriv = true;
+            if (priv.equals("private")) ifPriv = true;
             if (Storage.checkUser(userName, ID)) {
-                if (Storage.addGame(gameName, userName, ifPriv)) {
-                    output = "created";
+                String newName = null;
+                if ((newName = Storage.addGame(gameName, userName, ifPriv))!=null) {
+                    output = "create:"+newName;
                 } else {
                     output = "taken";
                 }

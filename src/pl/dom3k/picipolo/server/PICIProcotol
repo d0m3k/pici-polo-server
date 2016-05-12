@@ -6,10 +6,10 @@ client: "user:<user-name>:<id>"
 server: "created||ok||taken"
 </socket>
 
-user creating public game:
+user creating game:
 <socket>
 client: "create:<user-name>:<id>;public/private:<game-name>"
-server: "created||taken" if empty name then randomize it "<random-name>"
+server: "create:<game-name>||taken"
 </socket>
 
 user giving input:

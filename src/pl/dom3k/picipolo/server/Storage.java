@@ -2,6 +2,7 @@ package pl.dom3k.picipolo.server;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * Created by Januszek on 2016-05-11.
@@ -37,23 +38,29 @@ public class Storage {
         return correctID;
     }
 
-    public static boolean addGame(String name,String userName,boolean priv)throws Exception{
+    public static String addGame(String name,String userName,boolean priv)throws Exception{
         Game game = null;
         User user = null;
+        String newName = null;
         synchronized (gamesMonitor) {
             synchronized (usersMonitor) {
                 game = games.get(name);
                 user = users.get(userName);
                 if (game != null||user == null) {
-                    return false;
+                    return null;
                 }
-                game = games.put(name, new Game(name, user, priv));
+                if (name.equals("")){
+                    newName = getRandomName();
+                    if (newName==null) return null;
+                }else{
+                    newName = name;
+                }
+                game = games.put(newName, new Game(name, user, priv));
                 if (!priv) publicGames.add(game);
                 user.addGame(game);
             }
         }
-        if (game != null) return true;
-        return false;
+        if (game!=null)return newName;else return null;
     }
 
     public static boolean removeGame(String name)throws Exception{
@@ -156,5 +163,18 @@ public class Storage {
             }
         }
         return sB.toString();
+    }
+
+    private static String getRandomName()throws Exception{
+        String name=null;
+        boolean flag = true;
+        synchronized (gamesMonitor){
+            while(flag) {
+                int number = 20 + new Random().nextInt() % 10000;
+                name = "Burak" + number;
+                if (games.get("name")==null)flag = false;
+            }
+        }
+        return name;
     }
 }
