@@ -119,10 +119,11 @@ public class Game {
         return lastChange;
     }
 
-    public boolean addPlayer(User user){
+    public boolean addPlayer(User user)throws Exception{
         if (players[1]==null){
             players[1]=user;
             turn = 0;
+            user.addGame(this);
         }
         return false;
     }
