@@ -9,7 +9,7 @@ server: "created||ok||taken"
 user creating public game:
 <socket>
 client: "create:<user-name>:<id>;public/private:<game-name>"
-server: "created||taken"
+server: "created||taken" if empty name then randomize it "<random-name>"
 </socket>
 
 user giving input:
