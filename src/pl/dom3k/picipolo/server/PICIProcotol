@@ -13,9 +13,10 @@ server: "created||taken"
 </socket>
 
 user giving input:
+//
 <socket>
 client: "move:<user-name>:<id>:<game-name>:<number>:<card-number>"
-server: "results:<game-name>:<sign>:<other-sign>:<diff>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
+server: "results:<game-name>:<sign>:<other-sign>:<diff>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>" || "forbidden"
 </socket>
 
 user asking for others turn:
@@ -25,6 +26,7 @@ server: "idle" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-t
 </socket>
 
 user asking for current state:
+//empty fields for turn and second name if no players joined
 <socket>
 client: "state:<user-name>:<id>:<game-name>"
 server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"

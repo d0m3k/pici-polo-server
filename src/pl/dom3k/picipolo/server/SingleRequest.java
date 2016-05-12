@@ -164,6 +164,8 @@ public class SingleRequest extends Thread {
                 if (tab!=null){
                     output="results:"+gameName+":"+change.getSign()+":"+change.getDiff()+":"+tab[1]+":"+tab[2]+":"+tab[3]+":"+tab[4]+":"+tab[5];
                 }
+            }else{
+                output="forbidden";
             }
         }catch(Exception e){
             e.printStackTrace();
