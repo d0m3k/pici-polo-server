@@ -131,7 +131,12 @@ public class SingleRequest extends Thread {
     private void processCreate(String[][] line){
         String output = "error";
         try {
-            String gameName = line[1][1];
+            String gameName = null;
+            if (line[1].length>1){
+                gameName = line[1][1];
+            }else{
+                gameName = "";
+            }
             String userName = line[0][1];
             String ID = line[0][2];
             String priv = line[1][0];
