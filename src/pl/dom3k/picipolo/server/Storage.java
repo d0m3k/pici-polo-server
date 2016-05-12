@@ -55,12 +55,13 @@ public class Storage {
                 }else{
                     newName = name;
                 }
-                game = games.put(newName, new Game(name, user, priv));
+                game = new Game(name, user, priv);
+                games.put(newName, game);
                 if (!priv) publicGames.add(game);
                 user.addGame(game);
             }
         }
-        if (game!=null)return newName;else return null;
+        return newName;
     }
 
     public static boolean removeGame(String name)throws Exception{
