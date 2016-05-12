@@ -2,6 +2,7 @@ package pl.dom3k.picipolo.server;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -49,5 +50,9 @@ public class User {
 
     public boolean compareName(String name)throws Exception{
         return this.name.equals(name);
+    }
+
+    public LinkedList<Game> getGames(){
+        return new LinkedList<>(activeGames);
     }
 }

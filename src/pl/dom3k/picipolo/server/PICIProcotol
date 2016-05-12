@@ -42,3 +42,9 @@ user wanting public games:
 client: "public:<user-name>:<id>""
 server: "public:<game1-name>:<game2-name>:..."
 </socket>
+
+user wanting list of his games:
+<socket>
+client: "games:<user-name>:<id>""
+server: "games:<game1-name>:<game2-name>:..."
+</socket>

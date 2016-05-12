@@ -93,6 +93,8 @@ public class SingleRequest extends Thread {
                     processJoin(tab);
                 }else if(line.startsWith("public")){
                     processPublic(tab);
+                }else if(line.startsWith("games")){
+                    processGames(tab);
                 }else{
                     throw new IOException("Wrong user input");
                 }
@@ -236,6 +238,21 @@ public class SingleRequest extends Thread {
             String ID = line[0][2];
             if (Storage.checkUser(userName, ID)) {
                 output = Storage.listPublic();
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            pW.println(output);
+        }
+    }
+
+    private void processGames(String[][] line){
+        String output = "error";
+        try {
+            String userName = line[0][1];
+            String ID = line[0][2];
+            if (Storage.checkUser(userName, ID)) {
+                output = Storage.listGames(userName);
             }
         }catch(Exception e){
             e.printStackTrace();

@@ -143,4 +143,18 @@ public class Storage {
         }
         return sB.toString();
     }
+
+    public static String listGames(String userName)throws Exception{
+        StringBuilder sB = new StringBuilder();
+        User user=null;
+        synchronized (gamesMonitor){
+            synchronized (usersMonitor) {
+                if ((user = users.get(userName)) != null)
+                    for (Game g : user.getGames()) {
+                        sB.append(g.getName());
+                    }
+            }
+        }
+        return sB.toString();
+    }
 }
