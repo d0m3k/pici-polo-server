@@ -28,7 +28,7 @@ public class Game {
     User[] players;
     long[] points;
     Change lastChange;
-    short turn;
+    int turn;
     boolean priv;
 
     Game(String name,User first,boolean priv){
@@ -59,7 +59,7 @@ public class Game {
     public int getUserIndex(String name)throws Exception{
         int result = -1;
         for (int i=0;i<players.length;i++){
-            if (players[i].compareName(name)) result = i;
+            if (players[i]!=null&&players[i].compareName(name)) result = i;
         }
         return result;
     }
@@ -73,34 +73,35 @@ public class Game {
         String sign = null;
         String otherSign = null;
         if (cardNumber<1){
-            sign = useSign(playerIndex,number,zero);
-            otherSign = useSign(playerIndex,number,one);
+            sign = useSign(playerIndex,number,zero,true);
+            otherSign = useSign(playerIndex,number,one,false);
         }else{
-            sign = useSign(playerIndex,number,one);
-            otherSign = useSign(playerIndex,number,zero);
+            sign = useSign(playerIndex,number,one,true);
+            otherSign = useSign(playerIndex,number,zero,false);
         }
         change = new Change(points[playerIndex],points[playerIndex]-old,sign,players[playerIndex].getName(),number,otherSign);
         lastChange=change;
+        turn = (turn+1)%2;
         return change;
     }
 
-    private String useSign(int playerIndex,int number, int signNumber)throws Exception{
+    private String useSign(int playerIndex,int number, int signNumber, boolean flag)throws Exception{
         String sign = null;
         if (signNumber<35){
             sign = "+";
-            points[playerIndex]+=number;
+            if (flag) points[playerIndex]+=number;
         }else if (signNumber<65){
             sign = "-";
-            points[playerIndex]-=number;
+            if (flag) points[playerIndex]-=number;
         }else if (signNumber<80){
             sign = "*";
-            points[playerIndex]*=number;
+            if (flag) points[playerIndex]*=number;
         }else if(signNumber<95){
             sign = "/";
-            points[playerIndex]/=number;
+            if (flag) points[playerIndex]/=number;
         }else{
             sign = "=";
-            points[playerIndex]=number;
+            if (flag) points[playerIndex]=number;
         }
         return sign;
     }

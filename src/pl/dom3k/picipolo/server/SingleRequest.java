@@ -208,9 +208,9 @@ public class SingleRequest extends Thread {
                         }
                     }
                 }else if(change.getState()<0){
-                    output = "beginning";
+                    output = "idle";
                 }else if (change.getState()==1){
-                    output = "forbidden";
+                    output = "idle";
                 }
             }
         }catch(Exception e){
