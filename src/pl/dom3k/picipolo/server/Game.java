@@ -124,6 +124,7 @@ public class Game {
             players[1]=user;
             turn = 0;
             user.addGame(this);
+            return true;
         }
         return false;
     }
