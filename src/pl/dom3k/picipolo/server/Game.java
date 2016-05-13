@@ -96,7 +96,7 @@ public class Game {
         }else if (signNumber<80){
             sign = "*";
             if (flag) points[playerIndex]*=number;
-        }else if(signNumber<95){
+        }else if(signNumber<95&&number!=0){
             sign = "/";
             if (flag) points[playerIndex]/=number;
         }else{
