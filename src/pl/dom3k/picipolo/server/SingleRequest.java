@@ -169,7 +169,7 @@ public class SingleRequest extends Thread {
                 if (change.getState()==0) {
                     String[] tab = Storage.getResult(gameName, playerName);
                     if (tab != null) {
-                        output = "results:" + gameName + ":" + change.getSign() + ":" + change.getDiff() + ":" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
+                        output = "results:" + gameName + ":" + change.getSign() + ":" + change.getOtherSign() + ":" + change.getDiff() + ":" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
                     }
                 }else if(change.getState()<0){
                     output = "forbidden";
