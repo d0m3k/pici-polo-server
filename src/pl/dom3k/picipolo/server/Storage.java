@@ -108,7 +108,7 @@ public class Storage {
             Game game = null;
             User user = null;
             if ((game = games.get(gameName)) != null && (user = users.get(playerName))!=null ) {
-                game.setResultInTab(tab,user);
+                tab = game.setResultInTab(tab,user);
                 flag = true;
             }
         }
