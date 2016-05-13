@@ -105,7 +105,8 @@ public class Game {
         return sign;
     }
 
-    public String[] setResultInTab(String[] tab)throws Exception{
+    public String[] setResultInTab(String[] tab,User player)throws Exception{
+        if (!players[0].equals(player)&&!players[1].equals(player)) return new String[1];
         tab[0]=name;
         if (turn>=0)tab[1]=players[turn].getName();else tab[1]="";
         tab[2]=players[0].getName();
@@ -119,13 +120,14 @@ public class Game {
         return lastChange;
     }
 
-    public boolean addPlayer(User user)throws Exception{
+    public String addPlayer(User user)throws Exception{
+        if (user.equals(players[0])||user.equals(players[1])) return "already";
         if (players[1]==null){
             players[1]=user;
             turn = 0;
             user.addGame(this);
-            return true;
+            return "ok";
         }
-        return false;
+        return "full";
     }
 }

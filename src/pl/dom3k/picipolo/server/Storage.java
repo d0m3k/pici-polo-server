@@ -106,8 +106,9 @@ public class Storage {
         boolean flag = false;
         synchronized(gamesMonitor) {
             Game game = null;
-            if ((game = games.get(gameName)) != null) {
-                game.setResultInTab(tab);
+            User user = null;
+            if ((game = games.get(gameName)) != null && (user = users.get(playerName))!=null ) {
+                game.setResultInTab(tab,user);
                 flag = true;
             }
         }
@@ -127,19 +128,17 @@ public class Storage {
 
     public static String addPlayer(String gameName,String userName)throws Exception{
         Game game = null;
+        String out = "error";
         synchronized (gamesMonitor){
             synchronized (usersMonitor){
                 if ((game = games.get(gameName)) != null) {
-                    if (game.addPlayer(users.get(userName))){
-                        return "ok";
-                    }else{
-                        return "full";
-                    }
+                    out = game.addPlayer(users.get(userName));
                 }else{
-                    return "nonexisting";
+                    out = "nonexisting";
                 }
             }
         }
+        return out;
     }
 
     public static String listPublic()throws Exception{

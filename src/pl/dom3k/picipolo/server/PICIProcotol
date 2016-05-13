@@ -21,20 +21,20 @@ server: "results:<game-name>:<sign>:<other-sign>:<diff>:<whos-turn-name>:<first-
 user asking for others turn:
 <socket>
 client: "waiting:<user-name>:<id>:<game-name>:"
-server: "idle" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
+server: "idle" || "forbidden" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
 user asking for current state:
 //empty fields for turn and second name if no players joined
 <socket>
 client: "state:<user-name>:<id>:<game-name>:"
-server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
+server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>" || "forbidden"
 </socket>
 
 user wanting to join game:
 <socket>
 client: "join:<user-name>:<id>:<game-name>:"
-server: "full" || "nonexisting" || "ok"
+server: "full" || "nonexisting" || "ok" || "already"
 </socket>
 
 user wanting public games:
