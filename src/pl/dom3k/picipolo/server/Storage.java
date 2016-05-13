@@ -55,7 +55,7 @@ public class Storage {
                 }else{
                     newName = name;
                 }
-                game = new Game(name, user, priv);
+                game = new Game(newName, user, priv);
                 games.put(newName, game);
                 if (!priv) publicGames.add(game);
                 user.addGame(game);
