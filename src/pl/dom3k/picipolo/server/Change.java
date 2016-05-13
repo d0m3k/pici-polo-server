@@ -12,6 +12,17 @@ public class Change {
         this.playerName=playerName;
         this.number=number;
         this.otherSign=otherSign;
+        this.state = 0;
+    }
+
+    public Change(int flag){
+        this.result = 0;
+        this.diff = 0;
+        this.sign = "";
+        this.playerName="";
+        this.number=0;
+        this.otherSign="";
+        this.state = flag;
     }
 
     public long getResult() {
@@ -29,6 +40,7 @@ public class Change {
     private long result;
     private long diff;
     private String sign;
+    private int state;
 
     public String getOtherSign() {
         return otherSign;
@@ -47,5 +59,9 @@ public class Change {
     }
 
     private String playerName;
+
+    public int getState(){
+        return state;
+    }
 
 }

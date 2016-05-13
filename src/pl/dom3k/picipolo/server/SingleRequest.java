@@ -166,13 +166,16 @@ public class SingleRequest extends Thread {
             int signNumber=Integer.parseInt(line[0][5]);
             if (Storage.checkUser(playerName,ID)) change = Storage.makeMove(playerName,gameName,number,signNumber);
             if (change!=null){
-                String[] tab = Storage.getResult(gameName,playerName);
-                if (tab!=null){
-                    if (tab.length<6) output = "forbidden"; else
-                    output="results:"+gameName+":"+change.getSign()+":"+change.getDiff()+":"+tab[1]+":"+tab[2]+":"+tab[3]+":"+tab[4]+":"+tab[5];
+                if (change.getState()==0) {
+                    String[] tab = Storage.getResult(gameName, playerName);
+                    if (tab != null) {
+                        output = "results:" + gameName + ":" + change.getSign() + ":" + change.getDiff() + ":" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
+                    }
+                }else if(change.getState()<0){
+                    output = "forbidden";
+                }else{
+                    output = "forbidden";
                 }
-            }else{
-                output="forbidden";
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -190,12 +193,24 @@ public class SingleRequest extends Thread {
             Change change = null;
             if (Storage.checkUser(playerName,ID)) change = Storage.getLastChange(gameName,playerName);
             if (change!=null){
-                String[] tab = Storage.getResult(gameName,playerName);
-                if (tab!=null){
-                    if (tab.length<6) output = "forbidden"; else {
-                        if (!change.getPlayerName().equals(playerName))output = "other:" + gameName + ":" + change.getPlayerName() + ":" + change.getResult() + ":" + change.getSign() + ":" + change.getDiff() + ";" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
-                    else output = "idle";
+                if (change.getState()==0) {
+                    String[] tab = Storage.getResult(gameName, playerName);
+                    if (tab != null) {
+                        if (change.getPlayerName().equals(playerName)){
+                            output = "idle";
+                        }
+                        else {
+                            if (tab.length<6){
+                                output = "forbidden";
+                            }else {
+                                output = "other:" + gameName + ":" + change.getPlayerName() + ":" + change.getResult() + ":" + change.getSign() + ":" + change.getDiff() + ";" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
+                            }
+                        }
                     }
+                }else if(change.getState()<0){
+                    output = "beginning";
+                }else if (change.getState()==1){
+                    output = "forbidden";
                 }
             }
         }catch(Exception e){
@@ -214,8 +229,11 @@ public class SingleRequest extends Thread {
             String[] tab=null;
             if (Storage.checkUser(playerName,ID)) tab = Storage.getResult(gameName,playerName);
             if(tab!=null){
-                if (tab.length<6) output = "forbidden"; else
-                output="state:"+tab[0]+":"+tab[1]+":"+tab[2]+":"+tab[3]+":"+tab[4]+":"+tab[5];
+                if (tab.length<6){
+                    output = "forbidden";
+                }else {
+                    output = "state:" + tab[0] + ":" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
+                }
             }
         }catch(Exception e){
             e.printStackTrace();

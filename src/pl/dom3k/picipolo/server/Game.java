@@ -35,7 +35,7 @@ public class Game {
         this.name = name;
         players = new User[2];
         points = new long[2];
-        lastChange = null;
+        lastChange = new Change(-2);
         players[0]=first;
         points[0]=0;
         points[1]=0;
@@ -47,7 +47,7 @@ public class Game {
         this.name = name;
         players = new User[2];
         points = new long[2];
-        lastChange = null;
+        lastChange = new Change(-1);
         players[0]=first;
         players[1]=second;
         points[0]=0;
@@ -65,7 +65,7 @@ public class Game {
     }
 
     public Change makeMove(int playerIndex ,int number,int cardNumber)throws Exception{
-        if (playerIndex!=turn) return null;
+        if (playerIndex!=turn) return new Change(1);
         Change change = null;
         int zero = new Random().nextInt()%100;
         int one = new Random().nextInt()%100;
@@ -106,7 +106,7 @@ public class Game {
     }
 
     public String[] setResultInTab(String[] tab,User player)throws Exception{
-        if (!players[0].equals(player)&&!players[1].equals(player)) return new String[1];
+        if (getUserIndex(player.getName())==-1) return new String[1];
         tab[0]=name;
         if (turn>=0)tab[1]=players[turn].getName();else tab[1]="";
         tab[2]=players[0].getName();
@@ -126,6 +126,7 @@ public class Game {
             players[1]=user;
             turn = 0;
             user.addGame(this);
+            lastChange = new Change(-1);
             return "ok";
         }
         return "full";

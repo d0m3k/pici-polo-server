@@ -94,7 +94,7 @@ public class Storage {
         synchronized(gamesMonitor){
             synchronized (usersMonitor){
                 if((game = games.get(gameName))==null)return null;
-                if((playerIndex = game.getUserIndex(userName))==-1)return null;
+                if((playerIndex = game.getUserIndex(userName))==-1)return new Change(-1);
                 change = game.makeMove(playerIndex,number,cardNumber);
             }
         }
@@ -120,7 +120,11 @@ public class Storage {
         synchronized(gamesMonitor){
             Game game = null;
             if ((game = games.get(gameName)) != null) {
-                change = game.getLastChange();
+                if ((game.getUserIndex(targetName))!=-1) {
+                    change = game.getLastChange();
+                }else{
+                    change=new Change(1);
+                }
             }
         }
         return change;
