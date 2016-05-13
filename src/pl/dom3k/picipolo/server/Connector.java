@@ -3,22 +3,21 @@ package pl.dom3k.picipolo.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Januszek on 2016-05-10.
  */
+@SuppressWarnings("InfiniteLoopStatement")
 public class Connector {
 
     private static LinkedList<SingleRequest> readyPool;
+    @SuppressWarnings({"MismatchedQueryAndUpdateOfCollection", "unused", "FieldCanBeLocal"})
     private static LinkedList<SingleRequest> activePool;
-    private static Thread mainThread=null;
-    private static Object monitor;
+    private static Thread mainThread = null;
+    private static final Object monitor = new Object();
 
     public static void runServerSocket(){
-        monitor = new Object();
         mainThread = Thread.currentThread();
         readyPool = new LinkedList<>();
         for (int i =0;i<5;i++){
@@ -31,11 +30,11 @@ public class Connector {
         try {
             sS = new ServerSocket(5432);
             System.out.println("Server ready.");
-            Socket s = null;
+            Socket s;
             while(true){
                 try {
                     s = sS.accept();
-                    SingleRequest sR = null;
+                    SingleRequest sR;
                     while ((sR=getFreeRequest())==null){
                         try {
                             synchronized (monitor) {

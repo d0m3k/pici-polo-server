@@ -9,16 +9,16 @@ import java.net.Socket;
 /**
  * Created by Januszek on 2016-05-11.
  */
+@SuppressWarnings("InfiniteLoopStatement")
 public class SingleRequest extends Thread {
 
-    private Object monitor;
+    private final Object monitor = new Object();
     private Socket s;
     private PrintWriter pW;
     private BufferedReader bR;
     private boolean flag;
 
     public SingleRequest(){
-        monitor = new Object();
         this.s = null;
         pW = null;
         bR = null;
@@ -26,7 +26,6 @@ public class SingleRequest extends Thread {
     }
 
     public SingleRequest(Socket s) throws IOException {
-        monitor = new Object();
         this.s = s;
         pW = new PrintWriter(s.getOutputStream(), true);
         bR = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -51,7 +50,7 @@ public class SingleRequest extends Thread {
     @Override
     public void run() {
         while(true){
-            while(flag==false){
+            while(!flag){
                 synchronized(monitor){
                     try {
                         monitor.wait(5000);
@@ -71,7 +70,7 @@ public class SingleRequest extends Thread {
     }
 
     private void process(){
-        String line = null;
+        String line;
         try {
             while ((line = bR.readLine()) != null) {
                 String[] sublines = line.split(";");
@@ -141,7 +140,7 @@ public class SingleRequest extends Thread {
             boolean ifPriv = false;
             if (priv.equals("private")) ifPriv = true;
             if (Storage.checkUser(userName, ID)) {
-                String newName = null;
+                String newName;
                 if ((newName = Storage.addGame(gameName, userName, ifPriv))!=null) {
                     output = "create:"+newName;
                 } else {

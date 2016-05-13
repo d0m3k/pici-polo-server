@@ -5,6 +5,14 @@ package pl.dom3k.picipolo.server;
  */
 public class Change {
 
+    private long result;
+    private long diff;
+    private int number;
+    private int state;
+    private String sign;
+    private String playerName;
+    private String otherSign;
+
     public Change(long result, long diff, String sign,String playerName,int number,String otherSign) {
         this.result = result;
         this.diff = diff;
@@ -37,28 +45,19 @@ public class Change {
         return sign;
     }
 
-    private long result;
-    private long diff;
-    private String sign;
-    private int state;
-
     public String getOtherSign() {
         return otherSign;
     }
 
-    private String otherSign;
 
     public int getNumber() {
         return number;
     }
 
-    private int number;
 
     public String getPlayerName() {
         return playerName;
     }
-
-    private String playerName;
 
     public int getState(){
         return state;

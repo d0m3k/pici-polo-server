@@ -1,9 +1,7 @@
 package pl.dom3k.picipolo.server;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Januszek on 2016-05-10.
@@ -20,10 +18,6 @@ public class User {
     @Override
     public int hashCode() {
         return name.hashCode();
-    }
-
-    public String getName() {
-        return name;
     }
 
     private String name;
@@ -50,6 +44,10 @@ public class User {
 
     public boolean compareName(String name)throws Exception{
         return this.name.equals(name);
+    }
+
+    public String getName() {
+        return name;
     }
 
     public LinkedList<Game> getGames(){

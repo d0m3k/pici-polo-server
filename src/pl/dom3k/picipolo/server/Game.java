@@ -66,12 +66,12 @@ public class Game {
 
     public Change makeMove(int playerIndex ,int number,int cardNumber)throws Exception{
         if (playerIndex!=turn) return new Change(1);
-        Change change = null;
+        Change change;
         int zero = new Random().nextInt()%100;
         int one = new Random().nextInt()%100;
         long old = points[playerIndex];
-        String sign = null;
-        String otherSign = null;
+        String sign;
+        String otherSign;
         if (cardNumber<1){
             sign = useSign(playerIndex,number,zero,true);
             otherSign = useSign(playerIndex,number,one,false);
@@ -86,7 +86,7 @@ public class Game {
     }
 
     private String useSign(int playerIndex,int number, int signNumber, boolean flag)throws Exception{
-        String sign = null;
+        String sign;
         if (signNumber<35){
             sign = "+";
             if (flag) points[playerIndex]+=number;

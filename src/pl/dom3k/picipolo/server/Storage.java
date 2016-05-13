@@ -15,20 +15,19 @@ public class Storage {
     private static HashMap<String,User> users = new HashMap<>();
 
     public static boolean addUser(String name,String ID)throws Exception{
-        User user = null;
+        User user;
         synchronized(usersMonitor){
             user = users.get(name);
             if(user==null){
                 users.put(name,new User(name,ID));
             }
         }
-        if (user == null) return true;
-        return false;
+        return user == null;
     }
 
     public static boolean checkUser(String name,String ID)throws Exception{
         boolean correctID = false;
-        User user = null;
+        User user;
         synchronized (usersMonitor){
             user = users.get(name);
             if (user!=null){
@@ -40,8 +39,8 @@ public class Storage {
 
     public static String addGame(String name,String userName,boolean priv)throws Exception{
         Game game = null;
-        User user = null;
-        String newName = null;
+        User user;
+        String newName;
         synchronized (gamesMonitor) {
             synchronized (usersMonitor) {
                 if (name!=null) game = games.get(name);
@@ -65,8 +64,7 @@ public class Storage {
     }
 
     public static boolean removeGame(String name)throws Exception{
-        boolean removed = false;
-        Game game = null;
+        Game game;
         synchronized(gamesMonitor){
             synchronized (usersMonitor){
                 game = games.get(name);
@@ -81,16 +79,15 @@ public class Storage {
                     users[1].removeGame(game);
                 }
                 games.remove(name);
-                removed = true;
             }
         }
-        return removed;
+        return true;
     }
 
     public static Change makeMove(String userName,String gameName,int number,int cardNumber)throws Exception{
-        Game game = null;
-        Change change = null;
-        int playerIndex = -1;
+        Game game;
+        Change change;
+        int playerIndex;
         synchronized(gamesMonitor){
             synchronized (usersMonitor){
                 if((game = games.get(gameName))==null)return null;
@@ -105,8 +102,8 @@ public class Storage {
         String[] tab=new String[6];
         boolean flag = false;
         synchronized(gamesMonitor) {
-            Game game = null;
-            User user = null;
+            Game game;
+            User user;
             if ((game = games.get(gameName)) != null && (user = users.get(playerName))!=null ) {
                 tab = game.setResultInTab(tab,user);
                 flag = true;
@@ -118,7 +115,7 @@ public class Storage {
     public static Change getLastChange(String gameName,String targetName)throws Exception{
         Change change=null;
         synchronized(gamesMonitor){
-            Game game = null;
+            Game game;
             if ((game = games.get(gameName)) != null) {
                 if ((game.getUserIndex(targetName))!=-1) {
                     change = game.getLastChange();
@@ -131,8 +128,8 @@ public class Storage {
     }
 
     public static String addPlayer(String gameName,String userName)throws Exception{
-        Game game = null;
-        String out = "error";
+        Game game;
+        String out;
         synchronized (gamesMonitor){
             synchronized (usersMonitor){
                 if ((game = games.get(gameName)) != null) {
@@ -157,7 +154,7 @@ public class Storage {
 
     public static String listGames(String userName)throws Exception{
         StringBuilder sB = new StringBuilder();
-        User user=null;
+        User user;
         synchronized (gamesMonitor){
             synchronized (usersMonitor) {
                 if ((user = users.get(userName)) != null)
