@@ -202,7 +202,7 @@ public class SingleRequest extends Thread {
                             if (tab.length<6){
                                 output = "forbidden";
                             }else {
-                                output = "other:" + gameName + ":" + change.getPlayerName() + ":" + change.getResult() + ":" + change.getSign() + ":" + change.getDiff() + ";" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
+                                output = "other:" + gameName + ":" + change.getPlayerName() + ":" + change.getNumber() + ":" + change.getSign() + ":" + change.getDiff() + ";" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
                             }
                         }
                     }
