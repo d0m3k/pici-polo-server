@@ -199,6 +199,34 @@ class GameRejoined implements Returnable {
     }
 }
 
+class PublicGames implements Returnable {
+    @Override
+    public String getOutput() {
+        StringBuilder sB = new StringBuilder().append("public:");
+        for (String name:gamesNames) sB.append(name).append(":");
+        return sB.toString();
+    }
 
+    public PublicGames(String[] gamesNames) {
+        this.gamesNames = gamesNames;
+    }
+
+    private String[] gamesNames;
+}
+
+class PrivateGames implements Returnable {
+    @Override
+    public String getOutput() {
+        StringBuilder sB = new StringBuilder().append("private:");
+        for (String name:gamesNames) sB.append(name).append(":");
+        return sB.toString();
+    }
+
+    public PrivateGames(String[] gamesNames) {
+        this.gamesNames = gamesNames;
+    }
+
+    private String[] gamesNames;
+}
 
 
