@@ -1,5 +1,6 @@
 package pl.dom3k.picipolo.server;
 
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -28,7 +29,8 @@ public class Game {
     User[] players;
     long[] points;
     Change lastChange;
-    int turn;
+    int currentPlayer;
+    long creatingTime = new Date().getTime();
     boolean priv;
 
     Game(String name,User first,boolean priv){
@@ -40,7 +42,7 @@ public class Game {
         points[0]=0;
         points[1]=0;
         this.priv=priv;
-        turn = -1;
+        currentPlayer = -1;
     }
 
     Game(String name,User first,User second,boolean priv){
@@ -53,7 +55,7 @@ public class Game {
         points[0]=0;
         points[1]=0;
         this.priv=priv;
-        turn = 0;
+        currentPlayer = 0;
     }
 
     public int getUserIndex(String name)throws Exception{
@@ -65,7 +67,7 @@ public class Game {
     }
 
     public Change makeMove(int playerIndex ,int number,int cardNumber)throws Exception{
-        if (playerIndex!=turn) return new Change(1);
+        if (playerIndex!= currentPlayer) return new Change(1);
         Change change;
         int zero = new Random().nextInt()%100;
         int one = new Random().nextInt()%100;
@@ -81,7 +83,7 @@ public class Game {
         }
         change = new Change(points[playerIndex],points[playerIndex]-old,sign,players[playerIndex].getName(),number,otherSign);
         lastChange=change;
-        turn = (turn+1)%2;
+        currentPlayer = (currentPlayer +1)%2;
         return change;
     }
 
@@ -109,7 +111,7 @@ public class Game {
     public String[] setResultInTab(String[] tab,User player)throws Exception{
         if (getUserIndex(player.getName())==-1) return new String[1];
         tab[0]=name;
-        if (turn>=0)tab[1]=players[turn].getName();else tab[1]="";
+        if (currentPlayer >=0)tab[1]=players[currentPlayer].getName();else tab[1]="";
         tab[2]=players[0].getName();
         if (players[1]!=null)tab[3]=players[1].getName(); else tab[3]="";
         tab[4]=Long.toString(points[0]);
@@ -125,7 +127,7 @@ public class Game {
         if (user.equals(players[0])||user.equals(players[1])) return "already";
         if (players[1]==null){
             players[1]=user;
-            turn = 0;
+            currentPlayer = 0;
             user.addGame(this);
             lastChange = new Change(-1);
             return "ok";
