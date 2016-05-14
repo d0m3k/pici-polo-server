@@ -8,20 +8,24 @@ server: "created||ok||taken"
 
 user creating game:
 <socket>
-client: "create:<user-name>:<id>;public/private:<game-name>:"
+client: "create:<user-name>:<id>;public/private:<game-name>:<mode1>|<param1>|<param2>...,<mode2>...:"
 server: "create:<game-name>||taken"
 </socket>
+
+modes: "turns"-limited turns <param1>-number of turns,"time" - limited time for whole game <param1> - time in seconds
 
 user giving input:
 <socket>
 client: "move:<user-name>:<id>:<game-name>:<number>:<card-number>:"
 server: "results:<game-name>:<sign>:<other-sign>:<diff>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>" || "forbidden"
+|| "done:<game-name>:<winner-name>:<winner-result>:<number-of-done-turns>:<lasting-time>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
 user asking for others turn:
 <socket>
 client: "waiting:<user-name>:<id>:<game-name>:"
 server: "beginning" || "idle" || "forbidden" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>"
+|| "done:<game-name>:<winner-name>:<winner-result>:<number-of-done-turns>:<lasting-time>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
 user asking for current state:
@@ -29,6 +33,7 @@ user asking for current state:
 <socket>
 client: "state:<user-name>:<id>:<game-name>:"
 server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>" || "forbidden"
+|| "done:<game-name>:<winner-name>:<winner-result>:<number-of-done-turns>:<lasting-time>:<first-name>:<second-name>:<first-result>:<second-result>"
 </socket>
 
 user wanting to join game:
