@@ -38,7 +38,7 @@ public class Game {
     long creatingTime = new Date().getTime();
     boolean priv;
 
-    Game(String name,User first,boolean priv){
+    Game(String name,User first,boolean priv,String modes){
         this.name = name;
         players = new User[2];
         points = new long[2];
@@ -50,7 +50,7 @@ public class Game {
         currentPlayer = -1;
     }
 
-    Game(String name,User first,User second,boolean priv){
+    Game(String name,User first,User second,boolean priv,String modes){
         this.name = name;
         players = new User[2];
         points = new long[2];

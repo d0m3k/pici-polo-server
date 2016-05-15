@@ -41,7 +41,7 @@ public class Storage {
         return correctID;
     }
 
-    public static Returnable addGame(String name,String userName,boolean priv)throws Exception{
+    public static Returnable addGame(String name,String userName,boolean priv,String modes)throws Exception{
         Game game = null;
         User user;
         String newName;
@@ -57,7 +57,7 @@ public class Storage {
                 }else{
                     newName = name;
                 }
-                game = new Game(newName, user, priv);
+                game = new Game(newName, user, priv,modes);
                 games.put(newName, game);
                 if (!priv) publicGames.add(game);
                 user.addGame(game);

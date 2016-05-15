@@ -29,7 +29,6 @@ server: "beginning" || "idle" || "forbidden" ||  "other:<game-name>:<user-name>:
 </socket>
 
 user asking for current state:
-//empty fields for turn and second name if no players joined
 <socket>
 client: "state:<user-name>:<id>:<game-name>:"
 server: "lonely" || "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>:" || "forbidden"

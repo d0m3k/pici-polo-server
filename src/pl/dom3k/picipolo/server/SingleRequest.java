@@ -133,10 +133,12 @@ public class SingleRequest extends Thread {
             String userName = line[0][1];
             String ID = line[0][2];
             String priv = line[1][0];
+            String modes=null;
+            if (line[1].length>2) modes = line[1][2];
             boolean ifPriv = false;
             if (priv.equals("private")) ifPriv = true;
             if (Storage.checkUser(userName, ID)) {
-                output = Storage.addGame(gameName, userName, ifPriv);
+                output = Storage.addGame(gameName, userName, ifPriv,modes);
             }
         }catch(Exception e){
             e.printStackTrace();
