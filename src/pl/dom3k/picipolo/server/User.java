@@ -53,4 +53,9 @@ public class User {
     public LinkedList<Game> getGames(){
         return new LinkedList<>(activeGames);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

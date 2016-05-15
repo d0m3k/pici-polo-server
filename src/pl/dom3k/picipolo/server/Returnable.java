@@ -229,4 +229,17 @@ class PrivateGames implements Returnable {
     private String[] gamesNames;
 }
 
+class GameLonely implements Returnable {
+    @Override
+    public String getOutput() {
+        return "lonely";
+    }
+}
+
+class Error implements Returnable {
+    @Override
+    public String getOutput() {
+        return "error";
+    }
+}
 

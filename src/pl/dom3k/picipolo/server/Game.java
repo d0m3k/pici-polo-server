@@ -25,6 +25,11 @@ public class Game {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     String name;
     User[] players;
     long[] points;
@@ -37,7 +42,7 @@ public class Game {
         this.name = name;
         players = new User[2];
         points = new long[2];
-        lastChange = new Change(-2);
+        lastChange = null;
         players[0]=first;
         points[0]=0;
         points[1]=0;
@@ -49,7 +54,7 @@ public class Game {
         this.name = name;
         players = new User[2];
         points = new long[2];
-        lastChange = new Change(-1);
+        lastChange = null;
         players[0]=first;
         players[1]=second;
         points[0]=0;
@@ -66,8 +71,8 @@ public class Game {
         return result;
     }
 
-    public Change makeMove(int playerIndex ,int number,int cardNumber)throws Exception{
-        if (playerIndex!= currentPlayer) return new Change(1);
+    public Returnable makeMove(int playerIndex ,int number,int cardNumber)throws Exception{
+        if (playerIndex!= currentPlayer) return new Forbidden();
         Change change;
         int zero = new Random().nextInt()%100;
         int one = new Random().nextInt()%100;
@@ -84,7 +89,7 @@ public class Game {
         change = new Change(points[playerIndex],points[playerIndex]-old,sign,players[playerIndex].getName(),number,otherSign);
         lastChange=change;
         currentPlayer = (currentPlayer +1)%2;
-        return change;
+        return fillMoveResults();
     }
 
     private String useSign(int playerIndex,int number, int signNumber, boolean flag)throws Exception{
@@ -108,30 +113,50 @@ public class Game {
         return sign;
     }
 
-    public String[] setResultInTab(String[] tab,User player)throws Exception{
-        if (getUserIndex(player.getName())==-1) return new String[1];
-        tab[0]=name;
-        if (currentPlayer >=0)tab[1]=players[currentPlayer].getName();else tab[1]="";
-        tab[2]=players[0].getName();
-        if (players[1]!=null)tab[3]=players[1].getName(); else tab[3]="";
-        tab[4]=Long.toString(points[0]);
-        tab[5]=Long.toString(points[1]);
-        return tab;
+    public Returnable fillState()throws Exception{
+        if (currentPlayer<0) return new GameLonely();
+        String[] tabP = new String[players.length];
+        long[] tabR = new long[points.length];
+        for (int i=0;i<players.length;i++){
+            tabP[i]=players[i].getName();
+        }
+        System.arraycopy(points, 0, tabR, 0, points.length);
+        return new State(name,players[currentPlayer].getName(),tabP,tabR);
     }
 
-    public Change getLastChange()throws Exception{
-        return lastChange;
+    public Returnable getLastChange(int askingIndex)throws Exception{
+        if (currentPlayer<0) return new Forbidden();
+        if (lastChange==null) return new GameBeginning();
+        if (lastChange.getPlayerName().equals(players[askingIndex].getName())) return new Idle();
+        String[] tabP = new String[players.length];
+        long[] tabR = new long[points.length];
+        for (int i=0;i<players.length;i++){
+            tabP[i]=players[i].getName();
+        }
+        System.arraycopy(points, 0, tabR, 0, points.length);
+        return new OtherTurn(name,lastChange.getPlayerName(),lastChange.getNumber(),lastChange.getSign(),lastChange.getDiff(),players[currentPlayer].getName(),tabP,tabR);
     }
 
-    public String addPlayer(User user)throws Exception{
-        if (user.equals(players[0])||user.equals(players[1])) return "already";
+    public Returnable addPlayer(User user)throws Exception{
+        if (user.equals(players[0])||user.equals(players[1])) return new GameRejoined();
         if (players[1]==null){
             players[1]=user;
             currentPlayer = 0;
             user.addGame(this);
-            lastChange = new Change(-1);
-            return "ok";
+            lastChange = null;
+            return new GameJoined();
         }
-        return "full";
+        return new GameFull();
+    }
+
+    private Returnable fillMoveResults(){
+        if (lastChange==null)return new Forbidden();
+        String[] tabP = new String[players.length];
+        long[] tabR = new long[points.length];
+        for (int i=0;i<players.length;i++){
+            tabP[i]=players[i].getName();
+        }
+        System.arraycopy(points, 0, tabR, 0, points.length);
+        return new MoveResults(name,lastChange.getSign(),lastChange.getOtherSign(),lastChange.getDiff(),players[currentPlayer].getName(),tabP,tabR);
     }
 }

@@ -107,28 +107,24 @@ public class SingleRequest extends Thread {
     }
 
     private void processUser(String[][] line){
-        String output = "error";
+        Returnable output = new Error();
         try {
             String name = line[0][1];
             String ID = line[0][2];
-            if (Storage.addUser(name, ID)) {
-                output = "created";
-            } else {
-                if (Storage.checkUser(name, ID)) {
-                    output = "ok";
-                } else {
-                    output = "taken";
-                }
+            if (Storage.checkUser(name, ID)){
+                output = new UserAccepted();
+            }else{
+                output = Storage.addUser(name,ID);
             }
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            pW.println(output);
+            pW.println(output.getOutput());
         }
     }
 
     private void processCreate(String[][] line){
-        String output = "error";
+        Returnable output = new Error();
         try {
             String gameName = null;
             if (line[1].length>1){
@@ -140,109 +136,61 @@ public class SingleRequest extends Thread {
             boolean ifPriv = false;
             if (priv.equals("private")) ifPriv = true;
             if (Storage.checkUser(userName, ID)) {
-                String newName;
-                if ((newName = Storage.addGame(gameName, userName, ifPriv))!=null) {
-                    output = "create:"+newName;
-                } else {
-                    output = "taken";
-                }
+                output = Storage.addGame(gameName, userName, ifPriv);
             }
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            pW.println(output);
+            pW.println(output.getOutput());
         }
     }
 
     private void processMove(String[][] line){
-        String output = "error";
+        Returnable output = new Error();
         try{
             String playerName=line[0][1];
             String ID=line[0][2];
             String gameName=line[0][3];
-            Change change = null;
             int number=Integer.parseInt(line[0][4]);
             int signNumber=Integer.parseInt(line[0][5]);
-            if (Storage.checkUser(playerName,ID)) change = Storage.makeMove(playerName,gameName,number,signNumber);
-            if (change!=null){
-                if (change.getState()==0) {
-                    String[] tab = Storage.getResult(gameName, playerName);
-                    if (tab != null) {
-                        output = "results:" + gameName + ":" + change.getSign() + ":" + change.getOtherSign() + ":" + change.getDiff() + ":" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
-                    }
-                }else if(change.getState()<0){
-                    output = "forbidden";
-                }else{
-                    output = "forbidden";
-                }
-            }
+            if (Storage.checkUser(playerName,ID)) output = Storage.makeMove(playerName,gameName,number,signNumber);
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            pW.println(output);
+            pW.println(output.getOutput());
         }
     }
 
     private void processWaiting(String[][] line){
-        String output = "error";
+        Returnable output = new Error();
         try{
             String playerName=line[0][1];
             String ID=line[0][2];
             String gameName=line[0][3];
-            Change change = null;
-            if (Storage.checkUser(playerName,ID)) change = Storage.getLastChange(gameName,playerName);
-            if (change!=null){
-                if (change.getState()==0) {
-                    String[] tab = Storage.getResult(gameName, playerName);
-                    if (tab != null) {
-                        if (change.getPlayerName().equals(playerName)){
-                            output = "idle";
-                        }
-                        else {
-                            if (tab.length<6){
-                                output = "forbidden";
-                            }else {
-                                output = "other:" + gameName + ":" + change.getPlayerName() + ":" + change.getNumber() + ":" + change.getSign() + ":" + change.getDiff() + ";" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
-                            }
-                        }
-                    }
-                }else if(change.getState()<0){
-                    output = "idle";
-                }else if (change.getState()==1){
-                    output = "idle";
-                }
-            }
+            if (Storage.checkUser(playerName,ID)) output = Storage.getLastChange(gameName,playerName);
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            pW.println(output);
+            pW.println(output.getOutput());
         }
     }
 
     private void processState(String[][] line){
-        String output = "error";
+        Returnable output = new Error();
         try{
             String playerName=line[0][1];
             String ID=line[0][2];
             String gameName=line[0][3];
-            String[] tab=null;
-            if (Storage.checkUser(playerName,ID)) tab = Storage.getResult(gameName,playerName);
-            if(tab!=null){
-                if (tab.length<6){
-                    output = "forbidden";
-                }else {
-                    output = "state:" + tab[0] + ":" + tab[1] + ":" + tab[2] + ":" + tab[3] + ":" + tab[4] + ":" + tab[5];
-                }
-            }
+            if (Storage.checkUser(playerName,ID)) output = Storage.getResult(gameName,playerName);
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            pW.println(output);
+            pW.println(output.getOutput());
         }
     }
 
     private void processJoin(String[][] line){
-        String output = "error";
+        Returnable output = new Error();
         try {
             String gameName = line[0][3];
             String userName = line[0][1];
@@ -253,12 +201,12 @@ public class SingleRequest extends Thread {
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            pW.println(output);
+            pW.println(output.getOutput());
         }
     }
 
     private void processPublic(String[][] line){
-        String output = "error";
+        Returnable output = new Error();
         try {
             String userName = line[0][1];
             String ID = line[0][2];
@@ -268,12 +216,12 @@ public class SingleRequest extends Thread {
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            pW.println(output);
+            pW.println(output.getOutput());
         }
     }
 
     private void processGames(String[][] line){
-        String output = "error";
+        Returnable output = new Error();
         try {
             String userName = line[0][1];
             String ID = line[0][2];
@@ -283,7 +231,7 @@ public class SingleRequest extends Thread {
         }catch(Exception e){
             e.printStackTrace();
         }finally{
-            pW.println(output);
+            pW.println(output.getOutput());
         }
     }
 }

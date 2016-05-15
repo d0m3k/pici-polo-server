@@ -32,7 +32,7 @@ user asking for current state:
 //empty fields for turn and second name if no players joined
 <socket>
 client: "state:<user-name>:<id>:<game-name>:"
-server: "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>:" || "forbidden"
+server: "lonely" || "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>:" || "forbidden"
 || "done:<game-name>:<winner-name>:<winner-result>:<number-of-done-turns>:<lasting-time>:<first-name>:<second-name>:<first-result>:<second-result>:"
 </socket>
 

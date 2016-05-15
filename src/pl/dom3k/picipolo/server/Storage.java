@@ -14,15 +14,19 @@ public class Storage {
     private static LinkedList<Game> publicGames = new LinkedList<>();
     private static HashMap<String,User> users = new HashMap<>();
 
-    public static boolean addUser(String name,String ID)throws Exception{
+    public static Returnable addUser(String name,String ID)throws Exception{
         User user;
+        Returnable output;
         synchronized(usersMonitor){
             user = users.get(name);
             if(user==null){
                 users.put(name,new User(name,ID));
+                output = new UserCreated();
+            }else{
+                output = new Taken();
             }
         }
-        return user == null;
+        return output;
     }
 
     public static boolean checkUser(String name,String ID)throws Exception{
@@ -37,7 +41,7 @@ public class Storage {
         return correctID;
     }
 
-    public static String addGame(String name,String userName,boolean priv)throws Exception{
+    public static Returnable addGame(String name,String userName,boolean priv)throws Exception{
         Game game = null;
         User user;
         String newName;
@@ -45,12 +49,11 @@ public class Storage {
             synchronized (usersMonitor) {
                 if (name!=null) game = games.get(name);
                 user = users.get(userName);
-                if (game != null||user == null) {
-                    return null;
-                }
+                if (game != null) return new Taken();
+                if (user == null) return new Error();
                 if (name==null){
                     newName = getRandomName();
-                    if (newName==null) return null;
+                    if (newName==null) return new Error();
                 }else{
                     newName = name;
                 }
@@ -60,16 +63,16 @@ public class Storage {
                 user.addGame(game);
             }
         }
-        return newName;
+        return new GameCreated(newName);
     }
 
-    public static boolean removeGame(String name)throws Exception{
+    public static Returnable removeGame(String name)throws Exception{
         Game game;
         synchronized(gamesMonitor){
             synchronized (usersMonitor){
                 game = games.get(name);
                 if (game == null) {
-                    return false;
+                    return null;
                 }
                 User[] users = game.players;
                 if (users.length>0&&users[0]!=null){
@@ -81,89 +84,92 @@ public class Storage {
                 games.remove(name);
             }
         }
-        return true;
+        return null;
     }
 
-    public static Change makeMove(String userName,String gameName,int number,int cardNumber)throws Exception{
+    public static Returnable makeMove(String userName,String gameName,int number,int cardNumber)throws Exception{
         Game game;
-        Change change;
+        Returnable output;
         int playerIndex;
         synchronized(gamesMonitor){
             synchronized (usersMonitor){
-                if((game = games.get(gameName))==null)return null;
-                if((playerIndex = game.getUserIndex(userName))==-1)return new Change(-1);
-                change = game.makeMove(playerIndex,number,cardNumber);
+                if((game = games.get(gameName))==null)return new Forbidden();
+                if((playerIndex = game.getUserIndex(userName))==-1)return new Forbidden();
+                output = game.makeMove(playerIndex,number,cardNumber);
             }
         }
-        return change;
+        return output;
     }
 
-    public static String[] getResult(String gameName,String playerName)throws Exception{
-        String[] tab=new String[6];
-        boolean flag = false;
+    public static Returnable getResult(String gameName,String playerName)throws Exception{
+        Returnable output;
         synchronized(gamesMonitor) {
             Game game;
-            User user;
-            if ((game = games.get(gameName)) != null && (user = users.get(playerName))!=null ) {
-                tab = game.setResultInTab(tab,user);
-                flag = true;
-            }
+            if ((game = games.get(gameName)) == null) return new Error();
+            if ((game.getUserIndex(playerName))==-1) return new Forbidden();
+            output = game.fillState();
         }
-        if (flag) return tab; else return null;
+        return output;
     }
 
-    public static Change getLastChange(String gameName,String targetName)throws Exception{
-        Change change=null;
+    public static Returnable getLastChange(String gameName,String askingName)throws Exception{
+        Returnable output = new Error();
         synchronized(gamesMonitor){
             Game game;
             if ((game = games.get(gameName)) != null) {
-                if ((game.getUserIndex(targetName))!=-1) {
-                    change = game.getLastChange();
+                int askingIndex;
+                if ((askingIndex=game.getUserIndex(askingName))!=-1) {
+                    output = game.getLastChange(askingIndex);
                 }else{
-                    change=new Change(1);
+                    output = new Forbidden();
                 }
             }
         }
-        return change;
+        return output;
     }
 
-    public static String addPlayer(String gameName,String userName)throws Exception{
+    public static Returnable addPlayer(String gameName,String userName)throws Exception{
         Game game;
-        String out;
+        Returnable output;
         synchronized (gamesMonitor){
             synchronized (usersMonitor){
-                if ((game = games.get(gameName)) != null) {
-                    out = game.addPlayer(users.get(userName));
-                }else{
-                    out = "nonexisting";
-                }
+                if ((game = games.get(gameName)) == null) return new GameNonexistent();
+                output = game.addPlayer(users.get(userName));
+
             }
         }
-        return out;
+        return output;
     }
 
-    public static String listPublic()throws Exception{
-        StringBuilder sB = new StringBuilder();
+    public static Returnable listPublic()throws Exception{
+        Returnable output;
         synchronized (gamesMonitor){
-            for (Game g:publicGames){
-                sB.append(g.getName());
+            String[] tab = new String[publicGames.size()];
+            int i = 0;
+            for(Game game:publicGames){
+                tab[i++]=game.getName();
             }
+            output = new PublicGames(tab);
         }
-        return sB.toString();
+        return output;
     }
 
-    public static String listGames(String userName)throws Exception{
-        StringBuilder sB = new StringBuilder();
+    public static Returnable listGames(String userName)throws Exception{
+        Returnable output=new Error();
         User user;
         synchronized (gamesMonitor){
             synchronized (usersMonitor) {
-                if ((user = users.get(userName)) != null)
-                    for (Game g : user.getGames()) {
-                        sB.append(g.getName());
+                if ((user = users.get(userName)) != null){
+                    String[] tab = new String[user.getGames().size()];
+                    int i =0;
+                    for (Game game : user.getGames()) {
+                        tab[i++]=game.toString();
                     }
+                    output = new PrivateGames(tab);
+                }
             }
         }
-        return sB.toString();
+        return output;
     }
 
     private static String getRandomName()throws Exception{
