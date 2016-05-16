@@ -31,36 +31,60 @@ public class Game {
     }
 
     String name;
+    boolean priv;
     User[] players;
     long[] points;
-    Change lastChange;
+    Change lastChange=null;
+    long startTime = 0;
+    long endTime = Long.MAX_VALUE;
+    long timeLimit=0;
+    boolean timeMode=false;
     int currentPlayer;
-    long creatingTime = new Date().getTime();
-    boolean priv;
+    int turnCount = 0;
+    int turnLimit = 0;
+    boolean turnMode=false;
 
-    Game(String name,User first,boolean priv,String modes){
+    Game(String name,User first,boolean priv,String modes)throws Exception{
         this.name = name;
         players = new User[2];
         points = new long[2];
-        lastChange = null;
         players[0]=first;
         points[0]=0;
         points[1]=0;
         this.priv=priv;
         currentPlayer = -1;
+        parseModes(modes);
     }
 
-    Game(String name,User first,User second,boolean priv,String modes){
+    Game(String name,User first,User second,boolean priv,String modes)throws Exception{
         this.name = name;
         players = new User[2];
         points = new long[2];
-        lastChange = null;
         players[0]=first;
         players[1]=second;
         points[0]=0;
         points[1]=0;
         this.priv=priv;
         currentPlayer = 0;
+        parseModes(modes);
+        startTime = new Date().getTime();
+        endTime = startTime+timeLimit;
+    }
+
+    public void parseModes(String modes)throws Exception{
+        String[] modesT = modes.split(",");
+        for(String mode: modesT){
+            String[] innerMode = mode.split("|");
+            if(innerMode.length>0){
+                if(innerMode[0].startsWith("turns")){
+                    turnMode=true;
+                    turnLimit=Integer.parseInt(innerMode[1]);
+                }else if(innerMode[0].startsWith("time")){
+                    timeMode=true;
+                    timeLimit=Integer.parseInt(innerMode[1])*1000;
+                }
+            }
+        }
     }
 
     public int getUserIndex(String name)throws Exception{
@@ -73,12 +97,16 @@ public class Game {
 
     public Returnable makeMove(int playerIndex ,int number,int cardNumber)throws Exception{
         if (playerIndex!= currentPlayer) return new Forbidden();
+        if ((turnMode&&turnCount>=turnLimit)||(timeMode&&(new Date().getTime()>endTime))){
+            return fillEndGame();
+        }
         Change change;
         int zero = new Random().nextInt()%100;
         int one = new Random().nextInt()%100;
         long old = points[playerIndex];
         String sign;
         String otherSign;
+        turnCount++;
         if (cardNumber<1){
             sign = useSign(playerIndex,number,zero,true);
             otherSign = useSign(playerIndex,number,one,false);
@@ -89,6 +117,7 @@ public class Game {
         change = new Change(points[playerIndex],points[playerIndex]-old,sign,players[playerIndex].getName(),number,otherSign);
         lastChange=change;
         currentPlayer = (currentPlayer +1)%2;
+
         return fillMoveResults();
     }
 
@@ -115,6 +144,9 @@ public class Game {
 
     public Returnable fillState()throws Exception{
         if (currentPlayer<0) return new GameLonely();
+        if ((turnMode&&turnCount>=turnLimit)||(timeMode&&(new Date().getTime()>endTime))){
+            return fillEndGame();
+        }
         String[] tabP = new String[players.length];
         long[] tabR = new long[points.length];
         for (int i=0;i<players.length;i++){
@@ -127,6 +159,9 @@ public class Game {
     public Returnable getLastChange(int askingIndex)throws Exception{
         if (currentPlayer<0) return new Forbidden();
         if (lastChange==null) return new GameBeginning();
+        if ((turnMode&&turnCount>=turnLimit)||(timeMode&&(new Date().getTime()>endTime))){
+            return fillEndGame();
+        }
         if (lastChange.getPlayerName().equals(players[askingIndex].getName())) return new Idle();
         String[] tabP = new String[players.length];
         long[] tabR = new long[points.length];
@@ -144,6 +179,8 @@ public class Game {
             currentPlayer = 0;
             user.addGame(this);
             lastChange = null;
+            startTime = new Date().getTime();
+            endTime = startTime+timeLimit;
             return new GameJoined();
         }
         return new GameFull();
@@ -158,5 +195,17 @@ public class Game {
         }
         System.arraycopy(points, 0, tabR, 0, points.length);
         return new MoveResults(name,lastChange.getSign(),lastChange.getOtherSign(),lastChange.getDiff(),players[currentPlayer].getName(),tabP,tabR);
+    }
+
+    private Returnable fillEndGame(){
+        int victorIndex=0;
+        for(int i =0;i<points.length;i++) if (points[i]>points[victorIndex]) victorIndex = i;
+        String[] tabP = new String[players.length];
+        long[] tabR = new long[points.length];
+        for (int i=0;i<players.length;i++){
+            tabP[i]=players[i].getName();
+        }
+        System.arraycopy(points, 0, tabR, 0, points.length);
+        return new GameEnded(name,players[victorIndex].getName(),points[victorIndex],turnCount, startTime,tabP,tabR);
     }
 }
