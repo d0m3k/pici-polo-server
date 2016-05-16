@@ -17,21 +17,21 @@ modes: "turns"-limited turns <param1>-number of turns,"time" - limited time for 
 user giving input:
 <socket>
 client: "move:<user-name>:<id>:<game-name>:<number>:<card-number>:"
-server: "results:<game-name>:<sign>:<other-sign>:<diff>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>:" || "forbidden"
+server: "results:<game-name>:<sign>:<other-sign>:<diff>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>:<curr-turn>|<left-turns>:<curr-time>|<left-time>:" || "forbidden"
 || "done:<game-name>:<winner-name>:<winner-result>:<number-of-done-turns>:<lasting-time>:<first-name>:<second-name>:<first-result>:<second-result>:"
 </socket>
 
 user asking for others turn:
 <socket>
 client: "waiting:<user-name>:<id>:<game-name>:"
-server: "beginning" || "idle" || "forbidden" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>:"
+server: "beginning" || "idle" || "forbidden" ||  "other:<game-name>:<user-name>:<number>:<sign>:<diff>;<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>:<curr-turn>|<left-turns>:<curr-time>|<left-time>:"
 || "done:<game-name>:<winner-name>:<winner-result>:<number-of-done-turns>:<lasting-time>:<first-name>:<second-name>:<first-result>:<second-result>:"
 </socket>
 
 user asking for current state:
 <socket>
 client: "state:<user-name>:<id>:<game-name>:"
-server: "lonely" || "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>:" || "forbidden"
+server: "lonely" || "state:<game-name>:<whos-turn-name>:<first-name>:<second-name>:<first-result>:<second-result>:<curr-turn>|<left-turns>:<curr-time>|<left-time>:" || "forbidden"
 || "done:<game-name>:<winner-name>:<winner-result>:<number-of-done-turns>:<lasting-time>:<first-name>:<second-name>:<first-result>:<second-result>:"
 </socket>
 
