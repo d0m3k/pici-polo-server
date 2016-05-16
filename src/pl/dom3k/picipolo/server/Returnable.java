@@ -34,20 +34,16 @@ class MoveResults implements Returnable {
         StringBuilder sB = new StringBuilder().append("results:").append(gameName).append(":").append(sign).append(":").append(secondSign).append(":").append(diff).append(":").append(turnName).append(":");
         for (String name:players) sB.append(name).append(":");
         for (long points:results) sB.append(points).append(":");
+        sB.append(currTurn);
+        if (leftTurn>-1) sB.append("|").append(leftTurn);
+        sB.append(":");
+        sB.append(currTime);
+        if (leftTime>-1) sB.append("|").append(leftTime);
+        sB.append(":");
         return sB.toString();
     }
 
     private String gameName;
-
-    public MoveResults(String gameName, String sign, String secondSign, long diff, String turnName, String[] players, long[] results) {
-        this.gameName = gameName;
-        this.sign = sign;
-        this.secondSign = secondSign;
-        this.diff = diff;
-        this.turnName = turnName;
-        this.players = players;
-        this.results = results;
-    }
 
     private String sign;
     private String secondSign;
@@ -55,6 +51,25 @@ class MoveResults implements Returnable {
     private String turnName;
     private String[] players;
     private long[] results;
+    private int currTurn;
+    private int leftTurn;
+    private long currTime;
+    private long leftTime;
+
+    public MoveResults(String gameName, String sign, String secondSign, long diff, String turnName, String[] players, long[] results, int currTurn, int leftTurn, long currTime, long leftTime) {
+        this.gameName = gameName;
+        this.sign = sign;
+        this.secondSign = secondSign;
+        this.diff = diff;
+        this.turnName = turnName;
+        this.players = players;
+        this.results = results;
+        this.currTurn = currTurn;
+        this.leftTurn = leftTurn;
+        this.currTime = currTime;
+        this.leftTime = leftTime;
+    }
+
 }
 
 class GameEnded implements Returnable{
@@ -111,20 +126,35 @@ class State implements Returnable {
         StringBuilder sB = new StringBuilder().append("state:").append(gameName).append(":").append(turnName).append(":");
         for (String name:players) sB.append(name).append(":");
         for (long points:results) sB.append(points).append(":");
+        sB.append(currTurn);
+        if (leftTurn>-1) sB.append("|").append(leftTurn);
+        sB.append(":");
+        sB.append(currTime);
+        if (leftTime>-1) sB.append("|").append(leftTime);
+        sB.append(":");
         return sB.toString();
-    }
-
-    public State(String gameName, String turnName, String[] players, long[] results) {
-        this.gameName = gameName;
-        this.turnName = turnName;
-        this.players = players;
-        this.results = results;
     }
 
     private String gameName;
     private String turnName;
     private String[] players;
     private long[] results;
+    private int currTurn;
+    private int leftTurn;
+    private long currTime;
+    private long leftTime;
+
+    public State(String gameName, String turnName, String[] players, long[] results, int currTurn, int leftTurn, long currTime, long leftTime) {
+        this.gameName = gameName;
+        this.turnName = turnName;
+        this.players = players;
+        this.results = results;
+        this.currTurn = currTurn;
+        this.leftTurn = leftTurn;
+        this.currTime = currTime;
+        this.leftTime = leftTime;
+    }
+
 }
 
 class OtherTurn implements Returnable {
@@ -133,18 +163,13 @@ class OtherTurn implements Returnable {
         StringBuilder sB = new StringBuilder().append("other:").append(gameName).append(":").append(userName).append(":").append(number).append(":").append(sign).append(":").append(diff).append(";").append(turnName).append(":");
         for (String name:players) sB.append(name).append(":");
         for (long points:results) sB.append(points).append(":");
+        sB.append(currTurn);
+        if (leftTurn>-1) sB.append("|").append(leftTurn);
+        sB.append(":");
+        sB.append(currTime);
+        if (leftTime>-1) sB.append("|").append(leftTime);
+        sB.append(":");
         return sB.toString();
-    }
-
-    public OtherTurn(String gameName, String userName, int number, String sign, long diff, String turnName, String[] players, long[] results) {
-        this.gameName = gameName;
-        this.userName = userName;
-        this.number = number;
-        this.sign = sign;
-        this.diff = diff;
-        this.turnName = turnName;
-        this.players = players;
-        this.results = results;
     }
 
     private String gameName;
@@ -155,6 +180,25 @@ class OtherTurn implements Returnable {
     private String turnName;
     private String[] players;
     private long[] results;
+    private int currTurn;
+    private int leftTurn;
+    private long currTime;
+    private long leftTime;
+
+    public OtherTurn(String gameName, String userName, int number, String sign, long diff, String turnName, String[] players, long[] results, int currTurn, int leftTurn, long currTime, long leftTime) {
+        this.gameName = gameName;
+        this.userName = userName;
+        this.number = number;
+        this.sign = sign;
+        this.diff = diff;
+        this.turnName = turnName;
+        this.players = players;
+        this.results = results;
+        this.currTurn = currTurn;
+        this.leftTurn = leftTurn;
+        this.currTime = currTime;
+        this.leftTime = leftTime;
+    }
 }
 
 class Idle implements Returnable {
