@@ -142,6 +142,15 @@ public class Game {
         return fillMoveResults(lastingTime);
     }
 
+    /**
+     * Interpret given sign and number.
+     * @param playerIndex index of current player.
+     * @param number number chosen by player.
+     * @param signNumber randomized number for choosing sign.
+     * @param flag if current player's points should change based on sign and number.
+     * @return string containing used sign.
+     * @throws Exception
+     */
     private String useSign(int playerIndex,int number, int signNumber, boolean flag)throws Exception{
         String sign;
         if (signNumber<35){
