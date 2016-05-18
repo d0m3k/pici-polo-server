@@ -15,7 +15,6 @@ public class Game {
         if (o == null || getClass() != o.getClass()) return false;
         Game game = (Game) o;
         return name.equals(game.name);
-
     }
 
     @Override
@@ -240,5 +239,19 @@ public class Game {
         }
         System.arraycopy(points, 0, tabR, 0, points.length);
         return new GameEnded(name,players[victorIndex].getName(),points[victorIndex],turnCount, startTime,tabP,tabR);
+    }
+
+    public int getPlayersCount(){
+        int out =0;
+        for(User user:players) if (user!=null) out++;
+        return out;
+    }
+
+    public int getMaxPlayers(){
+        return players.length;
+    }
+
+    public String getCurrentName(){
+        return players[currentPlayer].getName();
     }
 }

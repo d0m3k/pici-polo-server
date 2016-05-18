@@ -147,11 +147,15 @@ public class Storage {
         Returnable output;
         synchronized (gamesMonitor){
             String[] tab = new String[publicGames.size()];
+            int[] tabNum = new int[publicGames.size()];
+            int[] tabMax = new int[publicGames.size()];
             int i = 0;
             for(Game game:publicGames){
-                tab[i++]=game.getName();
+                tab[i]=game.getName();
+                tabNum[i] = game.getPlayersCount();
+                tabMax[i++] = game.getMaxPlayers();
             }
-            output = new PublicGames(tab);
+            output = new PublicGames(tab,tabNum,tabMax);
         }
         return output;
     }
@@ -163,11 +167,17 @@ public class Storage {
             synchronized (usersMonitor) {
                 if ((user = users.get(userName)) != null){
                     String[] tab = new String[user.getGames().size()];
+                    int[] tabNum = new int[publicGames.size()];
+                    int[] tabMax = new int[publicGames.size()];
+                    String[] currentPlayers = new String[publicGames.size()];
                     int i =0;
                     for (Game game : user.getGames()) {
-                        tab[i++]=game.toString();
+                        tab[i]=game.toString();
+                        tabNum[i] = game.getPlayersCount();
+                        tabMax[i] = game.getMaxPlayers();
+                        currentPlayers[i++] = game.getCurrentName();
                     }
-                    output = new PrivateGames(tab);
+                    output = new PrivateGames(tab,tabNum,tabMax,currentPlayers);
                 }
             }
         }

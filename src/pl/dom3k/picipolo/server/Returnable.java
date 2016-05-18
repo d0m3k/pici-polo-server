@@ -290,15 +290,21 @@ class PublicGames implements Returnable {
     @Override
     public String getOutput() {
         StringBuilder sB = new StringBuilder().append("public:");
-        for (String name:gamesNames) sB.append(name).append(":");
+        for (int i=0;i<gamesNames.length;i++){
+            sB.append(gamesNames[i]).append(",").append(playersCount[i]).append("|").append(playersMax[i]).append(":");
+        }
         return sB.toString();
     }
 
-    public PublicGames(String[] gamesNames) {
+    public PublicGames(String[] gamesNames,int[] playersCount,int[] playersMax) {
         this.gamesNames = gamesNames;
+        this.playersCount=playersCount;
+        this.playersMax=playersMax;
     }
 
     private String[] gamesNames;
+    private int[] playersCount;
+    private int[] playersMax;
 }
 /**
  * Response with list of player's games.
@@ -307,15 +313,23 @@ class PrivateGames implements Returnable {
     @Override
     public String getOutput() {
         StringBuilder sB = new StringBuilder().append("private:");
-        for (String name:gamesNames) sB.append(name).append(":");
+        for (int i=0;i<gamesNames.length;i++){
+            sB.append(gamesNames[i]).append(",").append(playersCount[i]).append("|").append(playersMax[i]).append(",").append(currentPlayer[i]).append(":");
+        }
         return sB.toString();
     }
 
-    public PrivateGames(String[] gamesNames) {
+    public PrivateGames(String[] gamesNames,int[]playersCount,int[]playersMax,String[] currentPlayer) {
         this.gamesNames = gamesNames;
+        this.playersCount=playersCount;
+        this.playersMax=playersMax;
+        this.currentPlayer=currentPlayer;
     }
 
     private String[] gamesNames;
+    private int[] playersCount;
+    private int[] playersMax;
+    private String[] currentPlayer;
 }
 /**
  * Response from game with missing players.

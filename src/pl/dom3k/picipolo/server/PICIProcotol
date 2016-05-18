@@ -44,11 +44,11 @@ server: "full" || "nonexistent" || "ok" || "already"
 user wanting public games:
 <socket>
 client: "public:<user-name>:<id>:"
-server: "public:<game1-name>:<game2-name>:...:"
+server: "public:<game1-name>,<players-count>|<max-players>:<game2-name>:...:"
 </socket>
 
 user wanting list of his games:
 <socket>
 client: "games:<user-name>:<id>:"
-server: "games:<game1-name>:<game2-name>:...:"
+server: "games:<game1-name>,<players-count>|<max-players>,<whos-turn>:<game2-name>:...:"
 </socket>
