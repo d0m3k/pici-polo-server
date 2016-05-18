@@ -7,7 +7,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
+ * Custom Thread extending class, being a heart of thread pool system.
  * Created by Januszek on 2016-05-11.
+ * @author Kacper Jawoszek
  */
 @SuppressWarnings("InfiniteLoopStatement")
 public class SingleRequest extends Thread {
@@ -25,6 +27,11 @@ public class SingleRequest extends Thread {
         flag = false;
     }
 
+    /**
+     *
+     * @param s
+     * @throws IOException
+     */
     public SingleRequest(Socket s) throws IOException {
         this.s = s;
         pW = new PrintWriter(s.getOutputStream(), true);

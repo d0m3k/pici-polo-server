@@ -5,7 +5,9 @@ import java.util.LinkedList;
 import java.util.Random;
 
 /**
+ * Contains structures with games and players, methods interacting with them - all static.
  * Created by Januszek on 2016-05-11.
+ * @author Kacper Jawoszek
  */
 public class Storage {
     private static final Object gamesMonitor = new Object();

@@ -4,7 +4,9 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Created by Januszek on 2016-05-10. Welcome!
+ * Represents single game state and logic in server memory.
+ * Created by Januszek on 2016-05-10.
+ * @author Kacper Jawoszek
  */
 public class Game {
     @Override

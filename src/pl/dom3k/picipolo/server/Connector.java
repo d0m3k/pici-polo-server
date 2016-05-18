@@ -6,7 +6,9 @@ import java.net.Socket;
 import java.util.LinkedList;
 
 /**
+ * Class containing logic behind connections with users - ServerSocket and Thread Pool.
  * Created by Januszek on 2016-05-10.
+ * @author Kacper Jawoszek
  */
 @SuppressWarnings("InfiniteLoopStatement")
 public class Connector {
