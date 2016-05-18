@@ -1,19 +1,26 @@
 package pl.dom3k.picipolo.server;
 
 /**
+ * Interface for possible outputs(returns) from server.
+ * See <a href=https://github.com/kawiory-studio/pici-polo-server/blob/master/src/pl/dom3k/picipolo/server/PICIProcotol>PICIProtocol</a> for details.
  * Created by Januszek on 2016-05-14.
+ * @author Kacper Jawoszek
  */
 public interface Returnable {
     String getOutput();
 }
-
+/**
+ * Response for successfully created user.
+ */
 class UserCreated implements Returnable {
     @Override
     public String getOutput() {
         return "created";
     }
 }
-
+/**
+ * Response for accepting existing user login.
+ */
 class UserAccepted implements Returnable {
     @Override
     public String getOutput() {
@@ -21,6 +28,9 @@ class UserAccepted implements Returnable {
     }
 }
 
+/**
+ * Response for refusing user login - name already taken.
+ */
 class Taken implements Returnable {
     @Override
     public String getOutput() {
@@ -28,6 +38,9 @@ class Taken implements Returnable {
     }
 }
 
+/**
+ * Response for successful move - containing all information about current state of game.
+ */
 class MoveResults implements Returnable {
     @Override
     public String getOutput() {
@@ -71,7 +84,9 @@ class MoveResults implements Returnable {
     }
 
 }
-
+/**
+ * Response for ending of a game - containing results.
+ */
 class GameEnded implements Returnable{
     @Override
     public String getOutput() {
@@ -99,7 +114,9 @@ class GameEnded implements Returnable{
     private String[] players;
     private long[] results;
 }
-
+/**
+ * Response for forbidden action - trying to get data without permission.
+ */
 class Forbidden implements Returnable {
     @Override
     public String getOutput() {
@@ -107,6 +124,9 @@ class Forbidden implements Returnable {
     }
 }
 
+/**
+ * Response for successfully created game.
+ */
 class GameCreated implements Returnable {
     @Override
     public String getOutput() {
@@ -120,6 +140,9 @@ class GameCreated implements Returnable {
     private String gameName;
 }
 
+/**
+ * Response with whole state about game.
+ */
 class State implements Returnable {
     @Override
     public String getOutput() {
@@ -157,6 +180,9 @@ class State implements Returnable {
 
 }
 
+/**
+ * Response containing information about last move of other players.
+ */
 class OtherTurn implements Returnable {
     @Override
     public String getOutput() {
@@ -200,49 +226,63 @@ class OtherTurn implements Returnable {
         this.leftTime = leftTime;
     }
 }
-
+/**
+ * Response from game which didn't change since player's last move.
+ */
 class Idle implements Returnable {
     @Override
     public String getOutput() {
         return "idle";
     }
 }
-
+/**
+ * Response from game which didn't change since its beginning.
+ */
 class GameBeginning implements Returnable {
     @Override
     public String getOutput() {
         return "beginning";
     }
 }
-
+/**
+ * Response from full game.
+ */
 class GameFull implements Returnable {
     @Override
     public String getOutput() {
         return "full";
     }
 }
-
+/**
+ * Response for accessing nonexistent game.
+ */
 class GameNonexistent implements Returnable {
     @Override
     public String getOutput() {
         return "nonexistent";
     }
 }
-
+/**
+ * Response for joining game for the first time.
+ */
 class GameJoined implements Returnable {
     @Override
     public String getOutput() {
         return "ok";
     }
 }
-
+/**
+ * Response for joining game after its beginning.
+ */
 class GameRejoined implements Returnable {
     @Override
     public String getOutput() {
         return "already";
     }
 }
-
+/**
+ * Response with list of public games.
+ */
 class PublicGames implements Returnable {
     @Override
     public String getOutput() {
@@ -257,7 +297,9 @@ class PublicGames implements Returnable {
 
     private String[] gamesNames;
 }
-
+/**
+ * Response with list of player's games.
+ */
 class PrivateGames implements Returnable {
     @Override
     public String getOutput() {
@@ -272,14 +314,18 @@ class PrivateGames implements Returnable {
 
     private String[] gamesNames;
 }
-
+/**
+ * Response from game with missing players.
+ */
 class GameLonely implements Returnable {
     @Override
     public String getOutput() {
         return "lonely";
     }
 }
-
+/**
+ * Response for multiple kinds of errors.
+ */
 class Error implements Returnable {
     @Override
     public String getOutput() {
