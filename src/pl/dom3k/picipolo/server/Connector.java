@@ -19,6 +19,9 @@ public class Connector {
     private static Thread mainThread = null;
     private static final Object monitor = new Object();
 
+    /**
+     * Method containing initialization of thread pool/ServerSocket and infinite loop handling sockets.
+     */
     public static void runServerSocket(){
         mainThread = Thread.currentThread();
         readyPool = new LinkedList<>();
@@ -63,6 +66,10 @@ public class Connector {
         }
     }
 
+    /**
+     * Reset given thread and put into pool.
+     * @param sR thread to reset.
+     */
     public static synchronized void addFreeRequest(SingleRequest sR){
         try {
             readyPool.addLast(sR.resetRequest());
@@ -72,6 +79,10 @@ public class Connector {
         }
     }
 
+    /**
+     * Get thread to assign task.
+     * @return free thread.
+     */
     public static synchronized SingleRequest getFreeRequest(){
         return readyPool.pollFirst();
     }
@@ -80,6 +91,9 @@ public class Connector {
         return mainThread;
     }
 
+    /**
+     * Wake main thread.
+     */
     public static void notifyMonitor(){
         synchronized (monitor){
             monitor.notifyAll();

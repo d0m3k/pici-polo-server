@@ -71,6 +71,11 @@ public class Game {
         startTime = new Date().getTime();
     }
 
+    /**
+     * Handle given modes and set parameters for game.
+     * @param modes string with modes. See <a href=https://github.com/kawiory-studio/pici-polo-server/blob/master/src/pl/dom3k/picipolo/server/PICIProcotol>PICIProtocol</a> for details.
+     * @throws Exception if string is in wrong format.
+     */
     public void parseModes(String modes)throws Exception{
         String[] modesT = modes.split(",");
         for(String mode: modesT){
@@ -87,6 +92,12 @@ public class Game {
         }
     }
 
+    /**
+     * Return index for user with given index.
+     * @param name user name.
+     * @return given user index or -1 if there is no such user.
+     * @throws Exception
+     */
     public int getUserIndex(String name)throws Exception{
         int result = -1;
         for (int i=0;i<players.length;i++){
@@ -95,6 +106,14 @@ public class Game {
         return result;
     }
 
+    /**
+     * Make move in game.
+     * @param playerIndex index of moving player.
+     * @param number number chosen for current move.
+     * @param cardNumber card chosen by user (currently fixed 1).
+     * @return {@link Returnable} - based on game logic.
+     * @throws Exception
+     */
     public Returnable makeMove(int playerIndex ,int number,int cardNumber)throws Exception{
         long currTime = new Date().getTime();
         long lastingTime = currTime-startTime;

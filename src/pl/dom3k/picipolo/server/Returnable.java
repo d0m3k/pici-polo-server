@@ -7,6 +7,9 @@ package pl.dom3k.picipolo.server;
  * @author Kacper Jawoszek
  */
 public interface Returnable {
+    /***
+     * @return string which should be sent to asking user.
+     */
     String getOutput();
 }
 /**

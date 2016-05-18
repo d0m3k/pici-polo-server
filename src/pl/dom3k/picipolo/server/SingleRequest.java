@@ -27,11 +27,6 @@ public class SingleRequest extends Thread {
         flag = false;
     }
 
-    /**
-     *
-     * @param s
-     * @throws IOException
-     */
     public SingleRequest(Socket s) throws IOException {
         this.s = s;
         pW = new PrintWriter(s.getOutputStream(), true);
@@ -39,6 +34,11 @@ public class SingleRequest extends Thread {
         flag = true;
     }
 
+    /**
+     * Setting thread for new task.
+     * @param s Socket which should be handled.
+     * @throws IOException thrown from creating writer and reader.
+     */
     public void setRequest(Socket s) throws IOException {
         this.s = s;
         pW = new PrintWriter(s.getOutputStream(), true);
@@ -46,6 +46,11 @@ public class SingleRequest extends Thread {
         flag = true;
     }
 
+    /**
+     * Clearing thread - closing streams and socket - so it can be assigned again.
+     * @return
+     * @throws IOException
+     */
     public SingleRequest resetRequest() throws IOException {
         if (bR!=null) bR.close();
         if (pW!=null) pW.close();
@@ -76,6 +81,9 @@ public class SingleRequest extends Thread {
         }
     }
 
+    /**
+     * Method containing most of SingleRequest logic - interpreting user input, calling right methods and finally freeing this thread.
+     */
     private void process(){
         String line;
         try {
