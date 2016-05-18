@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
+ * Class for single user.
  * Created by Januszek on 2016-05-10.
+ * @author Kacper Jawoszek
  */
 public class User {
     @Override

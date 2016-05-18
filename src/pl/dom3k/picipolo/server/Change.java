@@ -1,7 +1,9 @@
 package pl.dom3k.picipolo.server;
 
 /**
+ * Contains information about last move from game.
  * Created by Januszek on 2016-05-11.
+ * @author Kacper Jawoszek
  */
 public class Change {
 
