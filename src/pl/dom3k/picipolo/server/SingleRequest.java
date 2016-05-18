@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Date;
 
 /**
  * Custom Thread extending class, being a heart of thread pool system.
@@ -110,7 +111,7 @@ public class SingleRequest extends Thread {
                 }else if(line.startsWith("games")){
                     processGames(tab);
                 }else{
-                    throw new IOException("Wrong user input");
+                    throw new IOException("Wrong user input "+new Date().toString());
                 }
             }
         }catch(IOException e){
