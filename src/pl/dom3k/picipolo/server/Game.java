@@ -171,6 +171,11 @@ public class Game {
         return sign;
     }
 
+    /**
+     * Return current state of game.
+     * @return Returnable - State, GameLonely (if there is still not enough players) or Done.
+     * @throws Exception
+     */
     public Returnable fillState()throws Exception{
         long currTime = new Date().getTime();
         long lastingTime = currTime-startTime;
@@ -187,6 +192,12 @@ public class Game {
         return new State(name,players[currentPlayer].getName(),tabP,tabR,turnCount,turnLimit,lastingTime/1000,timeLimit/1000);
     }
 
+    /**
+     * Return last change from the game.
+     * @param askingIndex
+     * @return Returnable - OtherTurn, Forbidden, GameBeginning, Idle or Done.
+     * @throws Exception
+     */
     public Returnable getLastChange(int askingIndex)throws Exception{
         long currTime = new Date().getTime();
         long lastingTime = currTime-startTime;
@@ -205,6 +216,12 @@ public class Game {
         return new OtherTurn(name,lastChange.getPlayerName(),lastChange.getNumber(),lastChange.getSign(),lastChange.getDiff(),players[currentPlayer].getName(),tabP,tabR,turnCount,turnLimit,lastingTime/1000,timeLimit/1000);
     }
 
+    /**
+     * Adds given player to game or inform him, that he is aleady in.
+     * @param user player to add into the game.
+     * @return GameJoined, GameRejoined or GameFull.
+     * @throws Exception
+     */
     public Returnable addPlayer(User user)throws Exception{
         if (user.equals(players[0])||user.equals(players[1])) return new GameRejoined();
         if (players[1]==null){
@@ -218,6 +235,11 @@ public class Game {
         return new GameFull();
     }
 
+    /**
+     * Returns information about current move.
+     * @param lastingTime
+     * @return MoveResults or Forbidden.
+     */
     private Returnable fillMoveResults(long lastingTime){
         if (lastChange==null)return new Forbidden();
         String[] tabP = new String[players.length];
@@ -229,6 +251,10 @@ public class Game {
         return new MoveResults(name,lastChange.getSign(),lastChange.getOtherSign(),lastChange.getDiff(),players[currentPlayer].getName(),tabP,tabR,turnCount,turnLimit,lastingTime/1000,timeLimit/1000);
     }
 
+    /**
+     * Returns information about ended game.
+     * @return GameEnded.
+     */
     private Returnable fillEndGame(){
         int victorIndex=0;
         for(int i =0;i<points.length;i++) if (points[i]>points[victorIndex]) victorIndex = i;
