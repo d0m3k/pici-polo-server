@@ -16,6 +16,13 @@ public class Storage {
     private static LinkedList<Game> publicGames = new LinkedList<>();
     private static HashMap<String,User> users = new HashMap<>();
 
+    /**
+     * Checks if user with given name exists, if not - add him;
+     * @param name user name.
+     * @param ID user android id.
+     * @return Returnable - userCreated or Taken.
+     * @throws Exception
+     */
     public static Returnable addUser(String name,String ID)throws Exception{
         User user;
         Returnable output;
@@ -31,6 +38,13 @@ public class Storage {
         return output;
     }
 
+    /**
+     * Checks if given user exists and if his id is correct.
+     * @param name user name.
+     * @param ID user android id.
+     * @return if user with given name and id exists.
+     * @throws Exception
+     */
     public static boolean checkUser(String name,String ID)throws Exception{
         boolean correctID = false;
         User user;
@@ -43,6 +57,15 @@ public class Storage {
         return correctID;
     }
 
+    /**
+     * Add game with given parameters to server.
+     * @param name game name. If empty or null, then random name is generated.
+     * @param userName name of user who wants to create game.
+     * @param priv if created game should be private.
+     * @param modes string with modes and theirs parameters. See <a href=https://github.com/kawiory-studio/pici-polo-server/blob/master/src/pl/dom3k/picipolo/server/PICIProcotol>PICIProtocol</a> for details.
+     * @return Returnable - GameCreated, Taken or Error.
+     * @throws Exception
+     */
     public static Returnable addGame(String name,String userName,boolean priv,String modes)throws Exception{
         Game game = null;
         User user;
@@ -53,7 +76,7 @@ public class Storage {
                 user = users.get(userName);
                 if (game != null) return new Taken();
                 if (user == null) return new Error();
-                if (name==null){
+                if (name==null||name.trim().equals("")){
                     newName = getRandomName();
                     if (newName==null) return new Error();
                 }else{
@@ -68,6 +91,12 @@ public class Storage {
         return new GameCreated(newName);
     }
 
+    /**
+     * Currently unused.
+     * @param name name of game to remove.
+     * @return Returnable - currently null.
+     * @throws Exception
+     */
     public static Returnable removeGame(String name)throws Exception{
         Game game;
         synchronized(gamesMonitor){
@@ -89,6 +118,15 @@ public class Storage {
         return null;
     }
 
+    /**
+     * Make a move in given game as given player.
+     * @param userName name of player.
+     * @param gameName name of game.
+     * @param number number chosen by player.
+     * @param cardNumber card number chosen by player.
+     * @return Returnable - Results, Forbidden or Done.
+     * @throws Exception
+     */
     public static Returnable makeMove(String userName,String gameName,int number,int cardNumber)throws Exception{
         Game game;
         Returnable output;
