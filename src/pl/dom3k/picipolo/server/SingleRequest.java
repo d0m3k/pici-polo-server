@@ -150,7 +150,7 @@ public class SingleRequest extends Thread {
             String ID = line[0][2];
             String priv = line[1][0];
             String modes=null;
-            if (line[1].length>2) modes = line[1][2];
+            if (line[1].length>2) modes = line[1][2]; else modes="";
             boolean ifPriv = false;
             if (priv.equals("private")) ifPriv = true;
             if (Storage.checkUser(userName, ID)) {
