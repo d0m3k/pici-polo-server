@@ -141,6 +141,13 @@ public class Storage {
         return output;
     }
 
+    /**
+     * Returns state for given game.
+     * @param gameName game name.
+     * @param playerName name of player who asks about game.
+     * @return Returnable - State, Forbidden or Error.
+     * @throws Exception
+     */
     public static Returnable getResult(String gameName,String playerName)throws Exception{
         Returnable output;
         synchronized(gamesMonitor) {
@@ -152,6 +159,13 @@ public class Storage {
         return output;
     }
 
+    /**
+     * Get last move from game.
+     * @param gameName name of game.
+     * @param askingName name of player who asks about game.
+     * @return
+     * @throws Exception
+     */
     public static Returnable getLastChange(String gameName,String askingName)throws Exception{
         Returnable output = new Error();
         synchronized(gamesMonitor){
