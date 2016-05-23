@@ -182,6 +182,13 @@ public class Storage {
         return output;
     }
 
+    /**
+     * Adds player to given name.
+     * @param gameName game name.
+     * @param userName player name.
+     * @return Returnable - GameJoined, GameFull, GameRejoined etc.
+     * @throws Exception
+     */
     public static Returnable addPlayer(String gameName,String userName)throws Exception{
         Game game;
         Returnable output;
@@ -195,6 +202,11 @@ public class Storage {
         return output;
     }
 
+    /**
+     * Returns {@link Returnable} with list of public games.
+     * @return
+     * @throws Exception
+     */
     public static Returnable listPublic()throws Exception{
         Returnable output;
         synchronized (gamesMonitor){
@@ -212,6 +224,12 @@ public class Storage {
         return output;
     }
 
+    /**
+     * Returns {@link Returnable} with list of given players game (created and joined).
+     * @param userName
+     * @return
+     * @throws Exception
+     */
     public static Returnable listGames(String userName)throws Exception{
         Returnable output=new Error();
         User user;
@@ -236,6 +254,11 @@ public class Storage {
         return output;
     }
 
+    /**
+     * Gets random name for game.
+     * @return
+     * @throws Exception
+     */
     private static String getRandomName()throws Exception{
         boolean flag = true;
         synchronized (gamesMonitor){
