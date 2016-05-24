@@ -267,12 +267,20 @@ public class Game {
         return new GameEnded(name,players[victorIndex].getName(),points[victorIndex],turnCount, startTime,tabP,tabR);
     }
 
+    /**
+     * Gives number of players inside game.
+     * @return players count.
+     */
     public int getPlayersCount(){
         int out =0;
         for(User user:players) if (user!=null) out++;
         return out;
     }
 
+    /**
+     * Gives maximum number of players that game can contain.
+     * @return maximum number of players.
+     */
     public int getMaxPlayers(){
         return players.length;
     }
