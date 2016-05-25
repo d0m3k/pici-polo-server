@@ -32,6 +32,12 @@ public class User {
         activeGames = new HashSet<>();
     }
 
+    /**
+     * Compare given id with this user id.
+     * @param id id to check.
+     * @return if given id is correct.
+     * @throws Exception
+     */
     public boolean compareID(String id)throws Exception{
         return this.id.equals(id);
     }
