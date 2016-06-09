@@ -286,6 +286,6 @@ public class Game {
     }
 
     public String getCurrentName(){
-        return players[currentPlayer].getName();
+        return currentPlayer>=0?players[currentPlayer].getName():"";
     }
 }

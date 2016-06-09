@@ -245,7 +245,8 @@ public class Storage {
                         tab[i]=game.toString();
                         tabNum[i] = game.getPlayersCount();
                         tabMax[i] = game.getMaxPlayers();
-                        currentPlayers[i++] = game.getCurrentName();
+                        currentPlayers[i] = game.getCurrentName();
+                        i++;
                     }
                     output = new PrivateGames(tab,tabNum,tabMax,currentPlayers);
                 }
